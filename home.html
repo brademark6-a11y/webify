@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VETIFY  | World-Class Veterinary Care</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* --- 1. PREMIUM GLOBAL VARIABLES --- */
+        :root { 
+            --primary-blue: #38bdf8; 
+            --secondary-blue: #0ea5e9;  
+            --accent-purple: #818cf8;
+            --accent-teal: #2dd4bf;
+            --brand-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #0ea5e9);
+            --premium-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #2dd4bf, #38bdf8);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --bg-grey: #f8fafc; 
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --card-bg: #ffffff;  
+            --border-color: rgba(0,0,0,0.06);   
+            --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.08); 
+            --card-shadow-hover: 0 30px 80px rgba(56, 189, 248, 0.15);
+            --dark-text: #1e293b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-xl: 0 25px 60px -12px rgba(0, 0, 0, 0.18);
+            --shadow-lg: 0 20px 45px -10px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+            --glow-blue: 0 0 30px rgba(56, 189, 248, 0.3);
+            --glow-purple: 0 0 30px rgba(129, 140, 248, 0.3);
+        }
+
+        /* --- 2. PREMIUM DARK THEME --- */
+        body.dark-theme {
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --bg-grey: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --dark-text: #f1f5f9;
+            --glass-bg: rgba(30, 41, 59, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- 3. PREMIUM BASE STYLES --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {  
+            font-family: 'Plus Jakarta Sans', sans-serif;  
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            color: var(--text-main); 
+            padding-bottom: 80px; 
+            transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* Premium Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 15%, rgba(56, 189, 248, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 90% 85%, rgba(129, 140, 248, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(45, 212, 191, 0.03) 0%, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Animated Gradient Overlay */
+        .premium-gradient-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--premium-gradient);
+            background-size: 400% 400%;
+            animation: gradientMove 20s ease infinite;
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- 4. PREMIUM ANIMATIONS --- */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideDown { 
+            from { opacity: 0; transform: translateY(-30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.9; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.9); }
+        }
+
+        /* --- 5. PREMIUM HEADER & NAVBAR --- */
+        .main-header { 
+            position: sticky; 
+            top: 0; 
+            z-index: 5000; 
+            transition: var(--transition); 
+            padding: 20px 0; 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-header.scrolled {
+            padding: 12px 0; 
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(30px) saturate(200%);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme .main-header.scrolled {
+            background: rgba(30, 41, 59, 0.92);
+        }
+
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 40px; 
+            height: 60px; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+        }
+
+          .logo-box img { 
+            width: 150px; 
+            height: auto;
+            transition: var(--transition);
+        }
+
+        .logo-box:hover img {
+            transform: scale(1.05);
+        }
+        /* --- 6. PREMIUM NAVBAR STYLES --- */
+        .navbar { 
+            display: flex; 
+            gap: 5px; 
+            background: var(--glass-bg); 
+            padding: 8px; 
+            border-radius: 50px; 
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03), 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar a { 
+            text-decoration: none; 
+            color: var(--text-muted); 
+            font-weight: 700; 
+            font-size: 14px; 
+            padding: 12px 26px; 
+            border-radius: 50px; 
+            transition: var(--transition); 
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .navbar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+            border-radius: 50px;
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+
+        .navbar a.active, 
+        .navbar a:hover { 
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .navbar a.active::before,
+        .navbar a:hover::before {
+            opacity: 1;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        .navbar a:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .navbar a i {
+            font-size: 14px;
+        }
+
+
+        /* --- 7. PREMIUM PROFILE SECTION --- */
+        .profile-wrapper { 
+            position: relative; 
+        }
+        
+        .profile-btn { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            padding: 10px 20px; 
+            border-radius: var(--radius-lg); 
+            transition: var(--transition);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.1));
+            border-radius: var(--radius-lg);
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .profile-btn:hover {
+            border-color: var(--border-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .profile-btn:hover::before {
+            opacity: 1;
+        }
+
+        .profile-info { 
+            text-align: right; 
+            line-height: 1.3; 
+            transition: var(--transition);
+        }
+
+        .profile-info p { 
+            font-size: 14px; 
+            font-weight: 900; 
+            margin: 0; 
+            color: var(--dark-text); 
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-info span { 
+            font-size: 12px; 
+            font-weight: 800; 
+            color: var(--secondary-blue); 
+            display: block;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .profile-avatar { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: var(--radius-lg); 
+            background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(129,140,248,0.15)); 
+            color: var(--secondary-blue); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid rgba(56,189,248,0.3); 
+            transition: var(--transition); 
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--brand-gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .profile-avatar.large { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: var(--radius-lg); 
+            font-size: 24px; 
+        }
+
+        .profile-avatar i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-btn:hover .profile-avatar { 
+            border-color: var(--secondary-blue);
+            transform: rotate(5deg) scale(1.1);
+            box-shadow: var(--glow-blue);
+        }
+
+        .profile-btn:hover .profile-avatar::before {
+            opacity: 0.1;
+        }
+
+        .profile-panel { 
+            position: absolute; 
+            right: 0; 
+            top: calc(100% + 20px); 
+            width: 320px; 
+            background: var(--card-bg); 
+            border-radius: var(--radius-xl); 
+            box-shadow: 0 30px 80px rgba(15, 42, 68, 0.25); 
+            border: 1px solid var(--border-color); 
+            display: none; 
+            overflow: hidden; 
+            z-index: 5001;
+            animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(20px);
+        }
+
+        .profile-panel.show { 
+            display: block; 
+        }
+
+        .profile-panel-header { 
+            display: flex; 
+            gap: 16px; 
+            padding: 28px; 
+            border-bottom: 1px solid var(--border-color); 
+            align-items: center; 
+            background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.08));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-panel-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--brand-gradient);
+            opacity: 0.05;
+            animation: gradientMove 10s ease infinite;
+        }
+
+        .profile-panel-body { 
+            padding: 20px; 
+        }
+
+        .profile-panel-body button { 
+            width: 100%; 
+            background: transparent; 
+            border: none; 
+            padding: 16px 20px; 
+            border-radius: var(--radius-md); 
+            font-weight: 800; 
+            font-size: 14px; 
+            display: flex; 
+            align-items: center; 
+            gap: 14px; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            color: var(--dark-text); 
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-panel-body button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .profile-panel-body button:hover { 
+            background: rgba(56, 189, 248, 0.08); 
+            color: var(--secondary-blue); 
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .profile-panel-body button:hover::before {
+            left: 100%;
+        }
+
+        .profile-panel-footer { 
+            padding: 24px 20px 20px; 
+            border-top: 1px solid var(--border-color); 
+        }
+
+        .logout-btn { 
+            width: 100%; 
+            background: linear-gradient(135deg, #fee2e2, #fecaca); 
+            color: var(--danger); 
+            border: none; 
+            padding: 16px; 
+            border-radius: var(--radius-md); 
+            font-weight: 900; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.25);
+        }
+
+        .logout-btn:hover::before {
+            opacity: 1;
+        }
+
+        .logout-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 8. PREMIUM MAIN CONTENT --- */
+        .container { 
+            width: 92%; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+            padding: 0 20px;
+        }
+
+        /* Premium Page Header */
+        .page-header {
+            text-align: center;
+            margin: 60px 0 70px;
+            animation: fadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .page-header h1 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: var(--premium-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 6s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Premium Hero Section */
+        .hero-section {
+            padding: 100px 5% 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(42px, 6vw, 72px);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 30px;
+            background: var(--premium-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+        }
+
+        .hero-title span {
+            position: relative;
+        }
+
+        .hero-title span::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--brand-gradient);
+            opacity: 0.3;
+            border-radius: 4px;
+            z-index: -1;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 50px;
+            line-height: 1.7;
+        }
+
+        /* Premium CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn-main { 
+            background: var(--brand-gradient); 
+            background-size: 200% 200%;
+            color: white; 
+            padding: 18px 48px; 
+            border-radius: 50px; 
+            text-decoration: none; 
+            font-weight: 900; 
+            border: none; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
+            animation: gradientMove 5s ease infinite;
+        }
+
+        .btn-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .btn-main:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-main:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary-blue);
+            padding: 18px 48px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 900;
+            border: 2px solid var(--secondary-blue);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-blue);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.25);
+        }
+
+        /* Premium Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 80px 0;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 40px 35px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+            height: 100%;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 4s ease infinite;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(56,189,248,0.03), rgba(129,140,248,0.03));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(129,140,248,0.1));
+            color: var(--secondary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            background: var(--brand-gradient);
+            color: white;
+            transform: rotate(10deg) scale(1.1);
+            box-shadow: var(--glow-blue);
+        }
+
+        .feature-card h4 {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--dark-text);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* Premium Stats Section */
+        .stats-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 60px;
+            margin: 80px 0;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--brand-gradient);
+            opacity: 0.03;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        /* Premium Footer */
+        .main-footer {
+            background: var(--card-bg);
+            padding: 100px 5% 60px;
+            margin-top: 120px;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .main-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: var(--dark-text);
+            font-weight: 900;
+        }
+
+        .footer-column p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-blue);
+            transform: translateX(8px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 50px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+       /* --- FIXED MODAL STYLES --- */
+.modal-overlay { 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.8); 
+    backdrop-filter: blur(8px); 
+    display: none; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 4000; 
+    padding: 20px;
+    overflow: hidden;
+}
+
+.modal-content { 
+    background: var(--card-bg); 
+    width: 90%; 
+    max-width: 600px; 
+    max-height: 90vh;
+    padding: 40px; 
+    border-radius: var(--radius-xl); 
+    box-shadow: var(--shadow-xl); 
+    position: relative; 
+    animation: fadeIn 0.3s ease; 
+    border: 1px solid var(--border-color);
+    overflow-y: auto;
+    margin: auto;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-close { 
+    position: absolute; 
+    top: 25px; 
+    right: 25px; 
+    background: var(--bg-grey); 
+    border: none; 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    z-index: 4001;
+}
+
+.modal-close:hover {
+    background: var(--primary-blue);
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* Modal Form Styles */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-form label {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--dark-text);
+    margin-bottom: 5px;
+}
+
+.modal-form input,
+.modal-form select {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--bg-grey);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.modal-form input:focus,
+.modal-form select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+.btn-main {
+    background: var(--brand-gradient);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+.btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);
+}
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .navbar {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: clamp(36px, 5vw, 56px);
+            }
+            
+            .feature-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                height: 50px;
+            }
+            
+            .profile-info {
+                display: none;
+            }
+            
+            .hero-section {
+                padding: 60px 5% 40px;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-main, .btn-secondary {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .stats-section {
+                padding: 40px 20px;
+            }
+        }
+
+        /* Premium Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-grey);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-gradient);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="premium-gradient-bg"></div>
+    
+    <!-- Premium Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="#" class="logo-box">
+                <img src="https://api.builder.io/api/v1/image/assets/TEMP/601e7ce376ebc12baea701438bda54aa021f45c3" alt="VETIFY">
+            </a>
+             <nav class="navbar">
+                <a href="home.html"  class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="appointment.html"><i class="fas fa-calendar-check"></i> Appointments</a>
+                <a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a>
+                <a href="about us.html"><i class="fas fa-info-circle"></i> About Us</a>
+            </nav>
+            <!-- Premium Profile Section -->
+            <div class="profile-wrapper">
+                <button class="profile-btn" id="profile-trigger">
+                    <div class="profile-info">
+                        <p id="top-name">Mark Bryan Brade</p>
+                        <span id="top-role"> Client</span>
+                    </div>
+                    <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                </button>
+
+                <div class="profile-panel" id="profile-dropdown">
+                    <div class="profile-panel-header">
+                        <div class="profile-avatar large"><i class="fas fa-user"></i></div>
+                        <div>
+                            <h4 id="panel-name">Mark Bryan Brade</h4>
+                            <small id="panel-role"> Client</small>
+                        </div>
+                    </div>
+                    <div class="profile-panel-body">
+                        <button onclick="openGenericModal('editProfile')">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </button>
+                        <button onclick="openGenericModal('addPet')">
+                            <i class="fas fa-paw"></i> Add New Pet
+                        </button>
+                        <button onclick="openGenericModal('myPets')">
+                            <i class="fas fa-folder-open"></i> My Pets
+                        </button>
+                        <button onclick="openGenericModal('settings')">
+                            <i class="fas fa-cog"></i>  Settings
+                        </button>
+                    </div>
+                    <div class="profile-panel-footer">
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Premium Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Premium Main Content -->
+    <main class="container">
+        <section class="hero-section">
+            <h1 class="hero-title">A New Standard of<br><span>Veterinary Excellence</span></h1>
+            <p class="hero-subtitle">
+                Experience world-class veterinary care with our premium platform. 
+                Join thousands of pet parents who trust Vetify for seamless booking, 
+                digital health records, and expert medical care.
+            </p>
+           <div class="cta-buttons">
+    <button class="btn-main" onclick="window.location.href='appointment.html'">
+        <i class="fas fa-calendar-plus"></i>
+        Book Appointment
+    </button>
+    <button class="btn-secondary" onclick="window.location.href='econsultant.html'">
+        <i class="fas fa-video"></i>
+        Try Tele-Health
+    </button>
+        </section>
+
+        <!-- Premium Features -->
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h4>Instant Booking</h4>
+                <p>Skip the waiting lines. Our  clients get priority scheduling with instant confirmation and dedicated support.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-file-medical-alt"></i>
+                </div>
+                <h4>Digital Health Records</h4>
+                <p>Access your pet's complete medical history, vaccination records, and treatment plans in one secure digital vault.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h4> Tele-Health</h4>
+                <p>Connect with top veterinary specialists from home for consultations, follow-ups, and non-emergency advice.</p>
+            </div>
+        </div>
+
+        <!-- Premium Stats -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">15,000+</div>
+                    <div class="stat-label">Happy Pets Treated</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Emergency Support</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.8%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Veterinary Experts</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <a href="#" class="logo-box" style="justify-content: flex-start; margin-bottom: 25px;">
+                    <div class="logo-icon" style="width: 36px; height: 36px;">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <div class="logo-text" style="font-size: 24px;">VETIFY</div>
+                </a>
+                <p>Providing exceptional veterinary care with compassion, expertise, and innovation since 2025.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <div class="footer-links">
+                    <a href="home.html"><i class="fas fa-chevron-right"></i> Home</a>
+                    <a href="services.html"><i class="fas fa-chevron-right"></i> Services</a>
+                    <a href="about us.html"><i class="fas fa-chevron-right"></i> About Us</a>
+                    <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+                    <a href="#"><i class="fas fa-chevron-right"></i> Contact</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <div class="footer-links">
+                    <a onclick="showLegalModal('Privacy Policy')"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                    <a onclick="showLegalModal('Terms of Service')"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                    <a onclick="showLegalModal('Cookie Policy')"><i class="fas fa-cookie"></i> Cookie Policy</a>
+                    <a onclick="showLegalModal('Accessibility')"><i class="fas fa-universal-access"></i> Accessibility</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Connect With Us</h3>
+                <div class="footer-links">
+                    <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 VETIFY Veterinary Clinic. All Rights Reserved. | Santa Maria, Bulacan, Philippines</p>
+        </div>
+    </footer>
+
+
+
+  <script>
+    // --- DYNAMIC USER PROFILE SYSTEM ---
+
+    // 1. PREMIUM STORAGE LOGIC - DYNAMIC VERSION
+    let myPets = JSON.parse(localStorage.getItem('vetify_pets')) || [];
+    let vaxHistory = JSON.parse(localStorage.getItem('vetify_vax_history')) || [];
+
+    // DYNAMIC USER PROFILE - Get from login or default
+    let userProfile = JSON.parse(localStorage.getItem('vetify_user')) || {};
+
+    // 2. FUNCTION PARA KUNIN ANG LOGIN DATA - FIXED VERSION
+    function getLoginData() {
+        // Check sessionStorage first (most recent login)
+        const sessionData = JSON.parse(sessionStorage.getItem('vetify_login_data'));
+        if (sessionData && sessionData.name) {
+            return sessionData;
+        }
+        
+        // Check if user is logged in via localStorage flag
+        const isLoggedIn = localStorage.getItem('vetify_is_logged_in');
+        const localUser = JSON.parse(localStorage.getItem('vetify_user'));
+        
+        if (isLoggedIn === 'true' && localUser && localUser.name) {
+            return localUser;
+        }
+        
+        // Check registered user data
+        const registeredName = localStorage.getItem('registered_name');
+        const registeredEmail = localStorage.getItem('registered_email');
+        
+        if (registeredName) {
+            return {
+                name: registeredName,
+                email: registeredEmail,
+                role: 'Client',
+                membership: 'Basic Tier'
+            };
+        }
+        
+        return null;
+    }
+
+    // 3. INITIALIZE USER FROM LOGIN DATA - FIXED VERSION
+    function initializeUserFromLogin() {
+        const loginData = getLoginData();
+        
+        if (loginData) {
+            // Update user profile with login data
+            userProfile = {
+                name: loginData.name || "Guest User",
+                role: loginData.role || "Client",
+                email: loginData.email || "",
+                phone: loginData.phone || "",
+                membership: loginData.role === 'VIP Client' ? "Gold Tier" : 
+                           loginData.role === 'Premium Client' ? "Blue Tier" : "Basic Tier",
+                joinDate: userProfile.joinDate || new Date().toISOString().split('T')[0]
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('vetify_user', JSON.stringify(userProfile));
+            localStorage.setItem('vetify_is_logged_in', 'true'); // Add login flag
+            
+            console.log('User initialized:', userProfile.name);
+            return true;
+        }
+        
+        // If no login data, check localStorage for existing user
+        const storedUser = JSON.parse(localStorage.getItem('vetify_user'));
+        if (storedUser && storedUser.name) {
+            userProfile = storedUser;
+            console.log('User loaded from localStorage:', userProfile.name);
+            return true;
+        }
+        
+        // Default guest user
+        userProfile = { 
+            name: "Guest User", 
+            role: "Standard Client",
+            email: "",
+            phone: "",
+            membership: "Basic Tier",
+            joinDate: new Date().toISOString().split('T')[0]
+        };
+        localStorage.setItem('vetify_user', JSON.stringify(userProfile));
+        
+        return false;
+    }
+
+    // 4. SYNC DATA FUNCTION
+    function syncData() {
+        localStorage.setItem('vetify_user', JSON.stringify(userProfile));
+        localStorage.setItem('vetify_pets', JSON.stringify(myPets));
+        localStorage.setItem('vetify_vax_history', JSON.stringify(vaxHistory));
+        
+        // Update all UI elements
+        updateProfileUI();
+        
+        // Update pet count in stats if applicable
+        updatePetStats();
+    }
+
+    // 5. UPDATE PROFILE UI FUNCTION
+    function updateProfileUI() {
+        // Update header profile
+        document.getElementById('top-name').innerText = userProfile.name;
+        document.getElementById('panel-name').innerText = userProfile.name;
+        document.getElementById('top-role').innerText = userProfile.role;
+        document.getElementById('panel-role').innerText = userProfile.role;
+        
+        // Update profile dropdown if exists
+        const profileNameElement = document.getElementById('profile-name');
+        if (profileNameElement) {
+            profileNameElement.textContent = userProfile.name;
+        }
+        
+        const profileEmailElement = document.getElementById('profile-email');
+        if (profileEmailElement) {
+            profileEmailElement.textContent = userProfile.email || "No email set";
+        }
+        
+        // Update avatar based on role
+        updateProfileAvatar();
+        
+        // Update hero welcome message - IMPORTANT: Ito ang magpapakita ng pangalan sa Hello
+        updateWelcomeMessage();
+    }
+
+    // 6. UPDATE PROFILE AVATAR BASED ON ROLE
+    function updateProfileAvatar() {
+        const avatarIcon = document.querySelector('.profile-avatar i');
+        const avatar = document.querySelector('.profile-avatar');
+        
+        if (avatarIcon && avatar) {
+            // Clear existing classes
+            avatar.className = 'profile-avatar';
+            
+            // Add role-specific styling
+            if (userProfile.role.includes('Premium')) {
+                avatar.style.background = 'linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.2))';
+                avatar.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                avatar.style.boxShadow = '0 0 0 2px rgba(56, 189, 248, 0.1)';
+            } else if (userProfile.role.includes('VIP')) {
+                avatar.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2))';
+                avatar.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+                avatar.style.boxShadow = '0 0 0 2px rgba(245, 158, 11, 0.1)';
+            } else {
+                avatar.style.background = 'linear-gradient(135deg, rgba(148, 163, 184, 0.2), rgba(100, 116, 139, 0.2))';
+                avatar.style.borderColor = 'rgba(148, 163, 184, 0.4)';
+            }
+        }
+    }
+
+    // 7. UPDATE WELCOME MESSAGE - FIXED VERSION
+    function updateWelcomeMessage() {
+        const heroTitle = document.querySelector('.hero-title');
+        
+        if (heroTitle) {
+            // Check if it's a new login
+            const sessionLoginData = JSON.parse(sessionStorage.getItem('vetify_login_data'));
+            if (sessionLoginData && sessionLoginData.isNewLogin) {
+                const firstName = userProfile.name.split(' ')[0];
+                heroTitle.innerHTML = `Hello,<br><span>${firstName}!</span>`;
+                
+                // Show welcome notification
+                setTimeout(() => {
+                    showNotification(`Welcome back, ${userProfile.name}!`, 'success');
+                }, 1000);
+                
+                // Clear the flag
+                delete sessionLoginData.isNewLogin;
+                sessionStorage.setItem('vetify_login_data', JSON.stringify(sessionLoginData));
+            } else {
+                // Regular display - Show user's first name
+                const firstName = userProfile.name.split(' ')[0];
+                if (userProfile.name !== "Guest User") {
+                    heroTitle.innerHTML = `Hello,<br><span>${firstName}!</span>`;
+                } else {
+                    // Default message for guest user
+                    heroTitle.innerHTML = `A New Standard of<br><span>Veterinary Excellence</span>`;
+                }
+            }
+        }
+    }
+
+    // 8. UPDATE PET STATS
+    function updatePetStats() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        if (statNumbers.length > 0 && myPets.length > 0) {
+            // Update the first stat to show user's pet count
+            statNumbers[0].textContent = `${myPets.length}+`;
+            statNumbers[0].parentElement.querySelector('.stat-label').textContent = 'Your Happy Pets';
+        }
+    }
+
+    // --- MODAL VARIABLES ---
+    const overlay = document.getElementById('modalOverlay');
+    const mBody = document.getElementById('modalBody');
+
+    // --- ACTIONS ---
+    function saveProfile() {
+        userProfile.name = document.getElementById('editName').value;
+        userProfile.email = document.getElementById('editEmail').value;
+        userProfile.phone = document.getElementById('editPhone').value;
+        userProfile.role = document.getElementById('editRole').value;
+        
+        // Update membership based on role
+        if (userProfile.role.includes('Premium')) {
+            userProfile.membership = "Blue Tier";
+        } else if (userProfile.role.includes('VIP')) {
+            userProfile.membership = "Gold Tier";
+        } else {
+            userProfile.membership = "Basic Tier";
+        }
+        
+        syncData(); 
+        closeModal();
+        
+        // Show success notification
+        showNotification('Profile updated successfully!', 'success');
+    }
+
+    function addPet() {
+        const name = document.getElementById('pName').value;
+        const species = document.getElementById('pSpec').value;
+        const breed = document.getElementById('pBreed').value;
+        const age = document.getElementById('pAge').value;
+        
+        if(name && age) { 
+            myPets.push({
+                name: name, 
+                species: species, 
+                breed: breed,
+                age: parseInt(age),
+                lastVax: null,
+                registered: new Date().toISOString().split('T')[0]
+            }); 
+            syncData(); 
+            closeModal();
+            
+            // Show success notification
+            showNotification(`${name} has been added to your profile!`, 'success');
+        } else {
+            showNotification('Please fill in all required fields', 'error');
+        }
+    }
+
+    function editPet(index) {
+        const pet = myPets[index];
+        Swal.fire({
+            title: `Edit ${pet.name}`,
+            html: `
+                <input id="swal-pet-name" class="swal2-input" placeholder="Pet Name" value="${pet.name}">
+                <input id="swal-pet-age" type="number" class="swal2-input" placeholder="Age" value="${pet.age}">
+                <input id="swal-pet-breed" class="swal2-input" placeholder="Breed" value="${pet.breed || ''}">
+                <select id="swal-pet-species" class="swal2-input">
+                    <option ${pet.species === 'Dog' ? 'selected' : ''}>Dog</option>
+                    <option ${pet.species === 'Cat' ? 'selected' : ''}>Cat</option>
+                    <option ${pet.species === 'Bird' ? 'selected' : ''}>Bird</option>
+                    <option ${pet.species === 'Rabbit' ? 'selected' : ''}>Rabbit</option>
+                    <option ${pet.species === 'Reptile' ? 'selected' : ''}>Reptile</option>
+                    <option ${pet.species === 'Other' ? 'selected' : ''}>Other</option>
+                </select>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Save Changes',
+            preConfirm: () => {
+                const newName = document.getElementById('swal-pet-name').value;
+                const newAge = document.getElementById('swal-pet-age').value;
+                const newBreed = document.getElementById('swal-pet-breed').value;
+                const newSpecies = document.getElementById('swal-pet-species').value;
+                
+                if (!newName || !newAge) {
+                    Swal.showValidationMessage('Please fill in name and age');
+                }
+                
+                return { newName, newAge: parseInt(newAge), newBreed, newSpecies };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                myPets[index] = {
+                    ...myPets[index],
+                    name: result.value.newName,
+                    age: result.value.newAge,
+                    breed: result.value.newBreed,
+                    species: result.value.newSpecies
+                };
+                syncData();
+                showNotification('Pet information updated', 'success');
+                
+                // Refresh pet modal if open
+                if (mBody.innerHTML.includes('My Pets')) {
+                    openGenericModal('myPets');
+                }
+            }
+        });
+    }
+
+    function delPet(index) { 
+        const petName = myPets[index].name;
+        Swal.fire({
+            title: 'Remove Pet?',
+            text: `Are you sure you want to remove ${petName} from your profile?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Yes, remove',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                myPets.splice(index,1); 
+                syncData(); 
+                showNotification(`${petName} has been removed`, 'warning');
+                
+                // Refresh pet modal if open
+                if (mBody.innerHTML.includes('My Pets')) {
+                    openGenericModal('myPets');
+                }
+            }
+        });
+    }
+
+    function closeModal() { 
+        overlay.style.display = 'none'; 
+    }
+
+    function toggleTheme() { 
+        document.body.classList.toggle('dark-theme'); 
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); 
+        
+        // Show notification
+        const theme = document.body.classList.contains('dark-theme') ? 'Dark' : 'Light';
+        showNotification(`${theme} mode activated`, 'info');
+    }
+
+    function exportData() { 
+        const data = {
+            user: userProfile,
+            pets: myPets,
+            vaxHistory: vaxHistory,
+            exportDate: new Date().toISOString()
+        };
+        
+        const dataStr = JSON.stringify(data, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        const exportFileDefaultName = `vetify-data-${userProfile.name.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.json`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        document.body.appendChild(linkElement);
+        linkElement.click();
+        document.body.removeChild(linkElement);
+        
+        showNotification('Data exported successfully!', 'success');
+    }
+
+    function requestDel() { 
+        Swal.fire({
+            title: 'Clear All Data?',
+            text: 'This will delete all your local data including pets and profile. Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Yes, clear all',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.clear(); 
+                sessionStorage.clear();
+                showNotification('All data has been cleared', 'warning');
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            }
+        });
+    }
+
+    function showNotification(message, type = 'info') {
+        // Remove existing notifications
+        document.querySelectorAll('.notification').forEach(n => n.remove());
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                z-index: 4000;
+                animation: slideDown 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-weight: 600;
+                max-width: 400px;
+            ">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideDown 0.3s ease reverse';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // --- MODAL FUNCTION ---
+    function openGenericModal(type) {
+        overlay.style.display = 'flex';
+        let content = '';
+
+        if (type === 'editProfile') {
+            content = `
+                <h2 style="margin-bottom: 10px; font-size: 24px; font-weight: 800; color: var(--dark-text);">Edit Profile</h2>
+                <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Update your personal information</p>
+                <div class="modal-form">
+                    <label>Full Name</label>
+                    <input type="text" id="editName" value="${userProfile.name}" placeholder="Enter your full name">
+                    <label>Email Address</label>
+                    <input type="email" id="editEmail" value="${userProfile.email || ''}" placeholder="your.email@example.com">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editPhone" value="${userProfile.phone || ''}" placeholder="+1 (555) 123-4567">
+                    <label>Role / Status</label>
+                    <select id="editRole">
+                        <option ${userProfile.role === ' Client' ? 'selected' : ''}> Client</option>
+                        <option ${userProfile.role === 'Standard Client' ? 'selected' : ''}>Standard Client</option>
+                        <option ${userProfile.role === 'VIP Client' ? 'selected' : ''}>VIP Client</option>
+                        <option ${userProfile.role === 'Guest User' ? 'selected' : ''}>Guest User</option>
+                    </select>
+                    <button class="btn-main" onclick="saveProfile()">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>`;
+        } else if (type === 'addPet') {
+            content = `
+                <h2 style="margin-bottom: 10px; font-size: 24px; font-weight: 800; color: var(--dark-text);">Add New Pet</h2>
+                <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Register your pet in our system</p>
+                <div class="modal-form">
+                    <label>Pet Name</label>
+                    <input type="text" id="pName" placeholder="e.g. Buddy">
+                    <label>Species</label>
+                    <select id="pSpec">
+                        <option>Dog</option>
+                        <option>Cat</option>
+                        <option>Bird</option>
+                        <option>Rabbit</option>
+                        <option>Reptile</option>
+                        <option>Other</option>
+                    </select>
+                    <label>Breed</label>
+                        <input type="text" id="pBreed" placeholder="e.g. Golden Retriever">
+                        <label>Age (Years)</label>
+                        <input type="number" id="pAge" placeholder="0" min="0" max="30">
+                        <button class="btn-main" onclick="addPet()">
+                            <i class="fas fa-plus-circle"></i> Add Pet to Profile
+                        </button>
+                    </div>`;
+                } else if (type === 'myPets') {
+                    let petList = myPets.map((p, i) => `
+                        <div class="settings-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--bg-grey); border-radius: var(--radius-md); margin-bottom: 10px;">
+                            <div>
+                                <h4 style="margin-bottom: 2px; color: var(--dark-text);">${p.name}</h4>
+                                <p style="font-size: 12px; color: var(--text-muted);">${p.species} • ${p.breed || 'Unknown breed'} • ${p.age} years</p>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="editPet(${i})" style="background: var(--secondary-blue); color: white; border: none; width: 36px; height: 36px; border-radius: 8px; cursor: pointer;">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="delPet(${i})" style="background: var(--danger); color: white; border: none; width: 36px; height: 36px; border-radius: 8px; cursor: pointer;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>`).join('');
+                    
+                    content = `
+                        <h2 style="margin-bottom: 10px; font-size: 24px; font-weight: 800; color: var(--dark-text);">My Pets (${myPets.length})</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Manage your registered pets</p>
+                        <div style="margin-top:15px; max-height:400px; overflow-y:auto; padding-right: 10px;">
+                            ${petList || '<p style="text-align: center; color: var(--text-muted); padding: 40px 0;">No pets registered yet. Add your first pet!</p>'}
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="btn-main" style="flex: 1;" onclick="openGenericModal('addPet')">
+                                <i class="fas fa-plus"></i> Add New Pet
+                            </button>
+                        </div>`;
+                } else if (type === 'settings') {
+                    const isDark = document.body.classList.contains('dark-theme') ? 'checked' : '';
+                    content = `
+                        <h2 style="margin-bottom: 20px; font-size: 24px; font-weight: 800; color: var(--dark-text);">System Settings</h2>
+                        <div class="settings-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--bg-grey); border-radius: var(--radius-md); margin-bottom: 10px;">
+                            <div>
+                                <h4 style="margin-bottom: 5px; color: var(--dark-text);">Dark Mode</h4>
+                                <p style="font-size: 12px; color: var(--text-muted);">Switch between light and dark themes</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleTheme()" ${isDark}>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="settings-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--bg-grey); border-radius: var(--radius-md); margin-bottom: 10px;">
+                            <div>
+                                <h4 style="margin-bottom: 5px; color: var(--dark-text);">Push Notifications</h4>
+                                <p style="font-size: 12px; color: var(--text-muted);">Receive appointment reminders and updates</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="settings-row" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--bg-grey); border-radius: var(--radius-md); margin-bottom: 20px;">
+                            <div>
+                                <h4 style="margin-bottom: 5px; color: var(--dark-text);">Email Notifications</h4>
+                                <p style="font-size: 12px; color: var(--text-muted);">Get newsletters and health tips</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-main" style="flex: 1;" onclick="exportData()">
+                                <i class="fas fa-file-export"></i> Export Data
+                            </button>
+                            <button class="btn-main" style="flex: 1; background: var(--danger);" onclick="requestDel()">
+                                <i class="fas fa-trash-alt"></i> Clear Data
+                            </button>
+                        </div>`;
+                }
+                mBody.innerHTML = content;
+            }
+            
+            // --- STICKY HEADER LOGIC ---
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('.main-header');
+                if (header) {
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                }
+            });
+            
+            // --- INITIALIZATION ---
+            document.addEventListener('DOMContentLoaded', function() {
+                // 1. Initialize user from login data - FIXED
+                initializeUserFromLogin();
+                
+                // 2. Initialize profile dropdown
+                const trigger = document.getElementById('profile-trigger');
+                const dropdown = document.getElementById('profile-dropdown');
+                
+                if (trigger && dropdown) {
+                    trigger.addEventListener('click', (e) => { 
+                        e.stopPropagation(); 
+                        dropdown.classList.toggle('show'); 
+                    });
+                    
+                    document.addEventListener('click', (e) => {
+                        if (!dropdown.contains(e.target) && !trigger.contains(e.target)) {
+                            dropdown.classList.remove('show');
+                        }
+                    });
+                }
+                
+                // 3. Initialize logout button
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function() {
+                        Swal.fire({
+                            title: 'Logout?',
+                            text: 'Are you sure you want to logout?',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes, Logout',
+                            cancelButtonText: 'Cancel',
+                            confirmButtonColor: '#991b1b',
+                            cancelButtonColor: '#94a3b8'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Clear login data
+                                sessionStorage.removeItem('vetify_login_data');
+                                localStorage.removeItem('vetify_is_logged_in');
+                                
+                                // Redirect to login
+                                window.location.href = 'login.html';
+                            }
+                        });
+                    });
+                }
+                
+                // 4. Load user data and update UI - FIXED
+                syncData();
+                
+                // 5. Theme initialization
+                if (localStorage.getItem('theme') === 'dark') {
+                    document.body.classList.add('dark-theme');
+                }
+                
+                // 6. Initialize animations
+                initPremiumAnimations();
+                initScrollEffects();
+                
+                console.log('Home page initialized for user:', userProfile.name);
+            });
+            
+            // Close modal when clicking outside
+            if (overlay) {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        closeModal();
+                    }
+                });
+            }
+            
+            // 9. PREMIUM ANIMATIONS
+            function initPremiumAnimations() {
+                // Add floating animation to feature cards
+                const featureCards = document.querySelectorAll('.feature-card');
+                featureCards.forEach((card, index) => {
+                    card.style.animation = `fadeIn 0.5s ease ${index * 0.1}s both`;
+                });
+                
+                // Add sparkle animation to stats
+                const statNumbers = document.querySelectorAll('.stat-number');
+                statNumbers.forEach((num, index) => {
+                    num.style.animation = `sparkle 2s ease-in-out ${index * 0.2}s infinite`;
+                });
+            }
+            
+            // 10. PREMIUM SCROLL EFFECTS
+            function initScrollEffects() {
+                const header = document.querySelector('.main-header');
+                
+                window.addEventListener('scroll', () => {
+                    if (header) {
+                        if (window.scrollY > 50) {
+                            header.classList.add('scrolled');
+                        } else {
+                            header.classList.remove('scrolled');
+                        }
+                    }
+                });
+            }
+            
+            function showLegalModal(title) {
+                openGenericModal('legal');
+                const modalBody = document.getElementById('modalBody');
+                modalBody.innerHTML = `
+                    <h2 style="margin-bottom: 10px; font-size: 28px; font-weight: 900; background: var(--brand-gradient); background-size: 200% 200%; animation: gradientMove 5s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">${title}</h2>
+                    <div style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                        <div style="background: var(--bg-grey); padding: 25px; border-radius: var(--radius-lg); margin-bottom: 20px;">
+                            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 15px; color: var(--dark-text);">1.  Service Terms</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 15px; line-height: 1.7;">As a VETIFY client, you receive priority access to our veterinary services, including same-day appointments, 24/7 tele-health support, and dedicated care coordination.</p>
+                            
+                            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 15px; color: var(--dark-text);">2. Data Protection</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 15px; line-height: 1.7;">We implement enterprise-grade encryption for all medical records and personal data. Your information is never shared with third parties without explicit consent.</p>
+                            
+                            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 15px; color: var(--dark-text);">3. Service Guarantee</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 15px; line-height: 1.7;">VETIFY  guarantees response times under 15 minutes for urgent inquiries and maintains a 99.9% service availability rate.</p>
+                        </div>
+                    </div>
+                    <button class="btn-main" style="width: 100%; margin-top: 20px;" onclick="closeModal()">
+                        <i class="fas fa-check-circle"></i> I Agree to Terms
+                    </button>`;
+            }
+            
+            // Add CSS for switch toggle
+            const switchStyle = document.createElement('style');
+            switchStyle.textContent = `
+                .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 60px;
+                    height: 34px;
+                }
+                
+                .switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                }
+                
+                .slider {
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #ccc;
+                    transition: .4s;
+                }
+                
+                .slider:before {
+                    position: absolute;
+                    content: "";
+                    height: 26px;
+                    width: 26px;
+                    left: 4px;
+                    bottom: 4px;
+                    background-color: white;
+                    transition: .4s;
+                }
+                
+                input:checked + .slider {
+                    background-color: var(--primary-blue);
+                }
+                
+                input:checked + .slider:before {
+                    transform: translateX(26px);
+                }
+                
+                .slider.round {
+                    border-radius: 34px;
+                }
+                
+                .slider.round:before {
+                    border-radius: 50%;
+                }
+            `;
+            document.head.appendChild(switchStyle);
+</script>
+</body>
+</html>

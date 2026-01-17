@@ -1,0 +1,3225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VETIFY - Premium Veterinary Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* --- EXISTING STYLES UNCHANGED --- */
+        :root { 
+            --primary-blue: #38bdf8; 
+            --secondary-blue: #0ea5e9;  
+            --accent-purple: #818cf8;
+            --accent-teal: #2dd4bf;
+            --brand-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #0ea5e9);
+            --premium-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #2dd4bf, #38bdf8);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --bg-grey: #f8fafc; 
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --card-bg: #ffffff;  
+            --border-color: rgba(0,0,0,0.06);   
+            --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.08); 
+            --card-shadow-hover: 0 30px 80px rgba(56, 189, 248, 0.15);
+            --dark-text: #1e293b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-xl: 0 25px 60px -12px rgba(0, 0, 0, 0.18);
+            --shadow-lg: 0 20px 45px -10px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+            --glow-blue: 0 0 30px rgba(56, 189, 248, 0.3);
+            --glow-purple: 0 0 30px rgba(129, 140, 248, 0.3);
+        }
+
+        body.dark-theme {
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --bg-grey: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --dark-text: #f1f5f9;
+            --glass-bg: rgba(30, 41, 59, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- EXISTING ANIMATIONS --- */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideDown { 
+            from { opacity: 0; transform: translateY(-30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        /* --- VACCINE ALERT ANIMATIONS --- */
+        @keyframes pulseGentle {
+            0%, 100% { box-shadow: 0 5px 20px rgba(245, 158, 11, 0.15); }
+            50% { box-shadow: 0 5px 25px rgba(245, 158, 11, 0.25); }
+        }
+
+        @keyframes pulseUrgent {
+            0%, 100% { box-shadow: 0 5px 20px rgba(239, 68, 68, 0.2); }
+            50% { box-shadow: 0 5px 25px rgba(239, 68, 68, 0.4); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        @keyframes badgePulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- EXISTING BASE STYLES --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {  
+            font-family: 'Plus Jakarta Sans', sans-serif;  
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            color: var(--text-main); 
+            padding-bottom: 80px; 
+            transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 15%, rgba(56, 189, 248, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 90% 85%, rgba(129, 140, 248, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(45, 212, 191, 0.03) 0%, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .premium-gradient-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--premium-gradient);
+            background-size: 400% 400%;
+            animation: gradientMove 20s ease infinite;
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- EXISTING HEADER & NAVBAR --- */
+        .main-header { 
+            position: sticky; 
+            top: 0; 
+            z-index: 5000; 
+            transition: var(--transition); 
+            padding: 20px 0; 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-header.scrolled {
+            padding: 12px 0; 
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(30px) saturate(200%);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme .main-header.scrolled {
+            background: rgba(30, 41, 59, 0.92);
+        }
+
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 40px; 
+            height: 60px; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+        }
+        .logo-box img { 
+            width: 150px; 
+            height: auto;
+            transition: var(--transition);
+        }
+
+        .logo-box:hover img {
+            transform: scale(1.05);
+        }
+        
+        .navbar { 
+            display: flex; 
+            gap: 5px; 
+            background: var(--glass-bg); 
+            padding: 8px; 
+            border-radius: 50px; 
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03), 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar a { 
+            text-decoration: none; 
+            color: var(--text-muted); 
+            font-weight: 700; 
+            font-size: 14px; 
+            padding: 12px 26px; 
+            border-radius: 50px; 
+            transition: var(--transition); 
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .navbar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+            border-radius: 50px;
+        }
+
+        .navbar a.active, 
+        .navbar a:hover { 
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .navbar a.active::before,
+        .navbar a:hover::before {
+            opacity: 1;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        /* --- EXISTING PROFILE SECTION --- */
+        .profile-wrapper { 
+            position: relative; 
+        }
+        
+        .profile-btn { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            padding: 10px 20px; 
+            border-radius: var(--radius-lg); 
+            transition: var(--transition);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-btn:hover {
+            border-color: var(--border-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .profile-info { 
+            text-align: right; 
+            line-height: 1.3; 
+            transition: var(--transition);
+        }
+
+        .profile-info p { 
+            font-size: 14px; 
+            font-weight: 900; 
+            margin: 0; 
+            color: var(--dark-text); 
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-info span { 
+            font-size: 12px; 
+            font-weight: 800; 
+            color: var(--secondary-blue); 
+            display: block;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .profile-avatar { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: var(--radius-lg); 
+            background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(129,140,248,0.15)); 
+            color: var(--secondary-blue); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid rgba(56,189,248,0.3); 
+            transition: var(--transition); 
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-avatar.large { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: var(--radius-lg); 
+            font-size: 24px; 
+        }
+
+        .profile-btn:hover .profile-avatar { 
+            border-color: var(--secondary-blue);
+            transform: rotate(5deg) scale(1.1);
+            box-shadow: var(--glow-blue);
+        }
+
+        .profile-panel { 
+            position: absolute; 
+            right: 0; 
+            top: calc(100% + 20px); 
+            width: 320px; 
+            background: var(--card-bg); 
+            border-radius: var(--radius-xl); 
+            box-shadow: 0 30px 80px rgba(15, 42, 68, 0.25); 
+            border: 1px solid var(--border-color); 
+            display: none; 
+            overflow: hidden; 
+            z-index: 5001;
+            animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(20px);
+        }
+
+        .profile-panel.show { 
+            display: block; 
+        }
+
+        .profile-panel-header { 
+            display: flex; 
+            gap: 16px; 
+            padding: 28px; 
+            border-bottom: 1px solid var(--border-color); 
+            align-items: center; 
+            background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.08));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-panel-body { 
+            padding: 20px; 
+        }
+
+        .profile-panel-body button { 
+            width: 100%; 
+            background: transparent; 
+            border: none; 
+            padding: 16px 20px; 
+            border-radius: var(--radius-md); 
+            font-weight: 800; 
+            font-size: 14px; 
+            display: flex; 
+            align-items: center; 
+            gap: 14px; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            color: var(--dark-text); 
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-panel-body button:hover { 
+            background: rgba(56, 189, 248, 0.08); 
+            color: var(--secondary-blue); 
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .profile-panel-footer { 
+            padding: 24px 20px 20px; 
+            border-top: 1px solid var(--border-color); 
+        }
+
+        .logout-btn { 
+            width: 100%; 
+            background: linear-gradient(135deg, #fee2e2, #fecaca); 
+            color: var(--danger); 
+            border: none; 
+            padding: 16px; 
+            border-radius: var(--radius-md); 
+            font-weight: 900; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logout-btn:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.25);
+        }
+
+        /* --- EXISTING MAIN CONTENT STYLES --- */
+        .container { 
+            width: 92%; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin: 40px 0 50px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .main-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .stat-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--secondary-blue);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--dark-text);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-trend.positive { color: var(--success); }
+        .stat-trend.negative { color: var(--danger); }
+
+        .main-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 35px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+        }
+
+        .main-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .main-card h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin-bottom: 10px;
+        }
+
+        .main-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin-bottom: 20px;
+        }
+
+        /* UPCOMING EVENTS GRID */
+        .upcoming-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .upcoming-card {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.1));
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .upcoming-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(56, 189, 248, 0.15);
+            border-color: var(--secondary-blue);
+        }
+
+        .upcoming-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .upcoming-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin-bottom: 5px;
+        }
+
+        .upcoming-type {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .type-appointment {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--secondary-blue);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* --- VACCINE ALERT BADGE STYLES --- */
+        .vaccine-alert-badge {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: inline-block;
+            transition: var(--transition);
+            cursor: pointer;
+            animation: badgePulse 2s infinite ease-in-out;
+        }
+
+        .vaccine-upcoming {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            animation: pulseGentle 2s infinite ease-in-out, shake 4s infinite;
+        }
+
+        .vaccine-overdue {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            animation: pulseUrgent 1.5s infinite ease-in-out, shake 2s infinite;
+        }
+
+        .vaccine-alert-badge:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .vaccine-alert-badge i {
+            margin-right: 6px;
+            font-size: 11px;
+        }
+
+        .vaccine-alert-section {
+            grid-column: 1 / -1;
+            margin-bottom: 25px;
+        }
+
+        .vaccine-alert-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .vaccine-alert-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .vaccine-icon-upcoming {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .vaccine-icon-overdue {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .vaccine-alert-content {
+            flex: 1;
+        }
+
+        .vaccine-alert-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: var(--dark-text);
+        }
+
+        .vaccine-alert-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .vaccine-countdown {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+        }
+
+        .countdown-upcoming {
+            background: rgba(245, 158, 11, 0.1);
+            color: #92400e;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .countdown-overdue {
+            background: rgba(239, 68, 68, 0.1);
+            color: #991b1b;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .vaccine-alert-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .vaccine-alert-btn {
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vaccine-alert-btn.book {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .vaccine-alert-btn.book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .vaccine-alert-btn.dismiss {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .vaccine-alert-btn.dismiss:hover {
+            background: rgba(100, 116, 139, 0.1);
+            border-color: var(--text-muted);
+        }
+
+        /* --- UPCOMING DETAILS --- */
+        .upcoming-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .upcoming-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .upcoming-detail i {
+            width: 16px;
+            color: var(--secondary-blue);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .upcoming-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .upcoming-btn {
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .upcoming-btn.view {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--secondary-blue);
+        }
+
+        .upcoming-btn.view:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .upcoming-btn.cancel {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .upcoming-btn.cancel:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .upcoming-btn.reschedule {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .upcoming-btn.reschedule:hover {
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .upcoming-btn.join {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .upcoming-btn.join:hover {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .no-upcoming {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        .no-upcoming i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .clock-container {
+            background: linear-gradient(135deg, var(--secondary-blue), #818cf8);
+            border-radius: var(--radius-xl);
+            padding: 35px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 15px 35px rgba(56, 189, 248, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .stats-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        #live-time {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #live-date {
+            font-size: 15px;
+            opacity: 0.9;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        #day-time {
+            font-size: 13px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .calendar-widget {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-weight: 800;
+            color: var(--secondary-blue);
+            font-size: 16px;
+        }
+
+        .cal-header i {
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .cal-header i:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--secondary-blue);
+        }
+
+        .cal-days-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .day-header {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 8px 0;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .day {
+            padding: 12px 0;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .day:hover:not(.empty):not(.today) {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--secondary-blue);
+        }
+
+        .day.empty {
+            color: var(--text-muted);
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .day.today {
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .day.selected {
+            background: var(--secondary-blue);
+            color: white;
+            font-weight: 800;
+        }
+
+        .day.event::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--warning);
+            border-radius: 50%;
+        }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .history-search {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .history-search input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-grey);
+            color: var(--dark-text);
+            font-size: 14px;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .history-search input:focus {
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+
+        .history-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .history-tabs {
+            background: var(--bg-grey);
+            padding: 6px;
+            border-radius: var(--radius-md);
+            display: flex;
+            gap: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .h-tab {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            color: var(--text-muted);
+            background: transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .h-tab.active {
+            background: var(--card-bg);
+            color: var(--secondary-blue);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .h-tab:hover:not(.active) {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 800;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        tr:hover td {
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .security-status {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .security-status i {
+            font-size: 24px;
+        }
+
+        .log-item {
+            font-size: 13px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .log-item:hover {
+            color: var(--dark-text);
+            background: rgba(56, 189, 248, 0.05);
+            padding-left: 10px;
+            border-radius: var(--radius-sm);
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+        }
+
+        .log-item i {
+            color: var(--secondary-blue);
+            font-size: 14px;
+            width: 20px;
+        }
+
+        /* Events Filter */
+        .events-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-grey);
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background: var(--brand-gradient);
+            color: white;
+            border-color: transparent;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--secondary-blue);
+        }
+
+        /* REMOVED DOCTOR GRID STYLES */
+
+        /* Existing Modal Styles */
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 3000; 
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content { 
+            background: var(--card-bg); 
+            width: 90%; 
+            max-width: 600px; 
+            padding: 40px; 
+            border-radius: var(--radius-xl); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
+            position: relative; 
+            animation: slideDown 0.4s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-close { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            background: var(--bg-grey); 
+            border: none; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            color: var(--text-muted); 
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--secondary-blue);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-form { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+
+        .modal-form label { 
+            font-weight: 700; 
+            font-size: 14px; 
+            color: var(--dark-text); 
+        }
+
+        .modal-form input, .modal-form select { 
+            padding: 14px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius-md); 
+            font-family: inherit; 
+            background: var(--bg-grey); 
+            color: var(--dark-text); 
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .modal-form input:focus, .modal-form select:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+
+        .settings-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 18px 0; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+
+        .settings-info h4 { 
+            font-size: 15px; 
+            font-weight: 700; 
+            margin-bottom: 4px; 
+        }
+
+        .settings-info p { 
+            font-size: 12px; 
+            color: var(--text-muted); 
+        }
+
+        .switch { 
+            position: relative; 
+            display: inline-block; 
+            width: 50px; 
+            height: 28px; 
+        }
+
+        .switch input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+        }
+
+        .slider { 
+            position: absolute; 
+            cursor: pointer; 
+            inset: 0; 
+            background-color: #cbd5e1; 
+            transition: .4s; 
+            border-radius: 34px; 
+        }
+
+        .slider:before { 
+            position: absolute; 
+            content: ""; 
+            height: 22px; 
+            width: 22px; 
+            left: 3px; 
+            bottom: 3px; 
+            background-color: white; 
+            transition: .4s; 
+            border-radius: 50%; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        input:checked + .slider { 
+            background: var(--secondary-blue); 
+        }
+
+        input:checked + .slider:before { 
+            transform: translateX(22px); 
+        }
+
+        .data-actions { 
+            display: flex; 
+            gap: 12px; 
+            margin-top: 25px; 
+        }
+
+        .btn-data { 
+            flex: 1; 
+            padding: 14px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border-color); 
+            background: var(--bg-grey); 
+            font-size: 13px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            color: var(--dark-text); 
+            transition: var(--transition);
+        }
+
+        .btn-data:hover { 
+            background: #e2e8f0; 
+            border-color: #cbd5e1; 
+            transform: translateY(-2px);
+        }
+
+        .btn-main { 
+            background: var(--brand-gradient); 
+            background-size: 200% 200%; 
+            animation: gradientMove 5s ease infinite; 
+            color: white; 
+            padding: 16px 30px; 
+            border-radius: 50px; 
+            border: none; 
+            font-weight: 700; 
+            cursor: pointer; 
+            width: 100%; 
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .btn-main:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-main:active { 
+            transform: scale(0.98); 
+        }
+
+        /* Appointment Details Modal */
+        .appointment-details {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .appointment-info {
+            background: rgba(56, 189, 248, 0.05);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        /* RESCHEDULE MODAL STYLES */
+        .reschedule-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--dark-text);
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            background: var(--bg-grey);
+            color: var(--dark-text);
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+
+        .reschedule-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+            transition: var(--transition);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-reschedule {
+            background: var(--brand-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            cursor: pointer;
+            flex: 2;
+            transition: var(--transition);
+        }
+
+        .btn-reschedule:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Detail Group Styles */
+        .detail-group {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-group:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: var(--dark-text);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .upcoming-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .navbar {
+                display: none;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .history-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .history-search {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .history-tabs {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .upcoming-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-card {
+                padding: 25px;
+            }
+            
+            .upcoming-actions {
+                flex-direction: column;
+            }
+            
+            .upcoming-btn {
+                width: 100%;
+            }
+            
+            .vaccine-alert-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .clock-container {
+                padding: 25px;
+            }
+            
+            #live-time {
+                font-size: 32px;
+            }
+            
+            .cal-grid .day {
+                padding: 8px 0;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+            <a href="#" class="logo-box">
+                <img src="https://api.builder.io/api/v1/image/assets/TEMP/601e7ce376ebc12baea701438bda54aa021f45c3" alt="VETIFY">
+            </a>
+            <nav class="navbar">
+                <a href="home.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="appointment.html"><i class="fas fa-calendar-check"></i> Appointments</a>
+                <a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a>
+                <a href="about us.html"><i class="fas fa-info-circle"></i> About Us</a>
+            </nav>
+
+            <div class="profile-wrapper">
+                <button class="profile-btn" id="profile-trigger">
+                    <div class="profile-info">
+                        <p id="top-name">Mark Bryan Brade</p>
+                        <span id="top-role">Premium Client</span>
+                    </div>
+                    <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                </button>
+
+                <div class="profile-panel" id="profile-dropdown">
+                    <div class="profile-panel-header">
+                        <div class="profile-avatar large"><i class="fas fa-user"></i></div>
+                        <div>
+                            <h4 id="panel-name">Mark Bryan Brade</h4>
+                            <small id="panel-role">Premium Client</small>
+                        </div>
+                    </div>
+                    <div class="profile-panel-body">
+                        <button onclick="openGenericModal('editProfile')"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                        <button onclick="openGenericModal('addPet')"><i class="fas fa-paw"></i> Add New Pet</button>
+                        <button onclick="openGenericModal('myPets')"><i class="fas fa-folder-open"></i> My Pets</button>
+                        <button onclick="openGenericModal('settings')"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                    <div class="profile-panel-footer">
+                        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Appointment Details Modal -->
+    <div class="modal-overlay" id="appointmentModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAppointmentModal()"><i class="fas fa-times"></i></button>
+            <div id="appointmentModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Reschedule Modal -->
+    <div class="modal-overlay" id="rescheduleModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeRescheduleModal()"><i class="fas fa-times"></i></button>
+            <div id="rescheduleModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Availability Modal -->
+    <div class="modal-overlay" id="availabilityModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAvailabilityModal()"><i class="fas fa-times"></i></button>
+            <h3 id="modalDateTitle" style="font-weight: 800; margin-bottom: 20px;">Available Time Slots</h3>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 30px;">
+                <div class="time-slot">08:00 AM</div>
+                <div class="time-slot">09:30 AM</div>
+                <div class="time-slot">11:00 AM</div>
+                <div class="time-slot">01:00 PM</div>
+            </div>
+            <button class="btn-main" onclick="closeAvailabilityModal()">Close</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Veterinary Dashboard</h1>
+            <p>Monitor your pet's health, track appointments, and manage veterinary services in one place</p>
+        </div>
+
+        <!-- Stats Grid - INALIS NA YUNG E-CONSULTATIONS AT DOCTOR REFERENCES -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Total Appointments</div>
+                        <div class="stat-value" id="total-appointments">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>12% this month</span>
+                </div>
+            </div>
+            
+            <!-- VACCINE REMINDERS STAT CARD (REPLACEMENT FOR E-CONSULTATIONS) -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Vaccine Reminders</div>
+                        <div class="stat-value" id="vaccine-reminders-count">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-syringe"></i>
+                    </div>
+                </div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Check due dates</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-title">Upcoming Events</div>
+                        <div class="stat-value" id="upcoming-events-count">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>2 this week</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-layout">
+            <!-- Main Column -->
+            <div class="main-column">
+                <!-- Upcoming Events Card - WALANG E-CONSULTATIONS FILTER -->
+                <div class="main-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <div>
+                            <h2>Upcoming Events</h2>
+                            <p style="font-size: 14px; color: var(--text-muted);">Your upcoming appointments</p>
+                        </div>
+                        <div class="events-filter">
+                            <button class="filter-btn active" onclick="filterEvents('all')">All</button>
+                            <button class="filter-btn" onclick="filterEvents('appointment')">Appointments</button>
+                        </div>
+                    </div>
+                    
+                    <!-- VACCINE ALERT SECTION -->
+                    <div id="vaccineAlertSection"></div>
+                    
+                    <div class="upcoming-grid" id="upcomingEventsList">
+                        <!-- Upcoming events will be loaded here -->
+                    </div>
+                    
+                    <div class="data-actions" style="margin-top: 25px;">
+                        <button class="btn-data" onclick="window.location.href='appointment.html'">
+                            <i class="fas fa-calendar-plus"></i> Book New Appointment
+                        </button>
+                        <button class="btn-data" onclick="refreshUpcomingEvents()">
+                            <i class="fas fa-sync-alt"></i> Refresh Events
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Appointment History - WALANG DOCTOR COLUMN -->
+                <div class="main-card">
+                    <div class="history-controls">
+                        <h3>Appointment History</h3>
+                        <div class="history-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="histSearch" placeholder="Search by pet or service..." onkeyup="filterHistory()">
+                        </div>
+                        <div class="history-tabs">
+                            <button class="h-tab active" id="tab-pen" onclick="switchHistory('pending')">Pending</button>
+                            <button class="h-tab" id="tab-comp" onclick="switchHistory('completed')">Completed</button>
+                            <button class="h-tab" id="tab-canc" onclick="switchHistory('cancelled')">Cancelled</button>
+                        </div>
+                    </div>
+                    
+                    <div id="pending-view" class="history-view">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Pet</th>
+                                    <th>Service</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pending-list"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="completed-view" class="history-view" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Pet</th>
+                                    <th>Service</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="completed-list"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="cancelled-view" class="history-view" style="display: none;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Pet</th>
+                                    <th>Service</th>
+                                    <th>Action</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cancelled-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Column -->
+            <div class="sidebar-column">
+                <!-- Premium Clock Widget -->
+                <div class="clock-container">
+                    <span class="stats-badge">
+                        <i class="fas fa-history"></i> My Records: <span id="total-apt-count">0</span>
+                    </span>
+                    <div id="live-time">00:00:00</div>
+                    <div id="live-date">Loading date...</div>
+                    <div id="day-time">
+                        <i class="fas fa-sun"></i> <span id="time-period">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- VACCINATION REMINDER SECTION (REPLACEMENT FOR SYSTEM LOGS) -->
+                <div class="main-card">
+                    <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 15px; color: var(--secondary-blue);">
+                        <i class="fas fa-syringe"></i> Vaccination Reminders
+                    </h4>
+                    
+                    <div class="vaccine-reminder-list" id="vaccineReminderList">
+                        <div class="vaccine-reminder-item">
+                            <div class="reminder-header">
+                                <div class="reminder-icon">
+                                    <i class="fas fa-dog"></i>
+                                </div>
+                                <div class="reminder-content">
+                                    <div class="reminder-title">Buddy</div>
+                                    <div class="reminder-subtitle">Rabies Vaccine</div>
+                                    <div class="reminder-date">Due: Mar 15, 2024</div>
+                                </div>
+                            </div>
+                            <div class="reminder-status upcoming">
+                                <i class="fas fa-clock"></i> 5 days left
+                            </div>
+                        </div>
+                        
+                        <div class="vaccine-reminder-item">
+                            <div class="reminder-header">
+                                <div class="reminder-icon">
+                                    <i class="fas fa-cat"></i>
+                                </div>
+                                <div class="reminder-content">
+                                    <div class="reminder-title">Whiskers</div>
+                                    <div class="reminder-subtitle">FVRCP Booster</div>
+                                    <div class="reminder-date">Due: Apr 2, 2024</div>
+                                </div>
+                            </div>
+                            <div class="reminder-status upcoming">
+                                <i class="fas fa-clock"></i> 23 days left
+                            </div>
+                        </div>
+                        
+                        <div class="vaccine-reminder-item">
+                            <div class="reminder-header">
+                                <div class="reminder-icon">
+                                    <i class="fas fa-paw"></i>
+                                </div>
+                                <div class="reminder-content">
+                                    <div class="reminder-title">Max</div>
+                                    <div class="reminder-subtitle">Annual Vaccination</div>
+                                    <div class="reminder-date">Completed: Feb 10, 2024</div>
+                                </div>
+                            </div>
+                            <div class="reminder-status completed">
+                                <i class="fas fa-check"></i> Done
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="data-actions" style="margin-top: 20px;">
+                        <button class="btn-data" onclick="window.location.href='appointment.html?service=Vaccination'">
+                            <i class="fas fa-calendar-plus"></i> Schedule Vaccine
+                        </button>
+                        <button class="btn-data" onclick="refreshVaccineReminders()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Premium Calendar Widget -->
+                <div class="main-card calendar-widget">
+                    <div class="cal-header">
+                        <i class="fas fa-chevron-left" onclick="changeMonth(-1)"></i>
+                        <span id="monthYearDisplay"></span>
+                        <i class="fas fa-chevron-right" onclick="changeMonth(1)"></i>
+                    </div>
+                    
+                    <div class="cal-days-header">
+                        <div class="day-header">SUN</div>
+                        <div class="day-header">MON</div>
+                        <div class="day-header">TUE</div>
+                        <div class="day-header">WED</div>
+                        <div class="day-header">THU</div>
+                        <div class="day-header">FRI</div>
+                        <div class="day-header">SAT</div>
+                    </div>
+                    
+                    <div class="cal-grid" id="calendarGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+// ============================================
+// SUPABASE INITIALIZATION
+// ============================================
+const supabaseUrl = 'https://feyvtzwbzlnigrzxrxwa.supabase.co';
+const supabaseKey = 'sb_publishable_c0flkoOUUMbPqjDB-5Bkzw_THgaoCSs';
+const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+// ============================================
+// GLOBAL VARIABLES
+// ============================================
+let currentMonth = new Date();
+let currentTab = 'pending';
+let upcomingEvents = [];
+let currentEventFilter = 'all';
+
+// User data
+let myPets = [];
+let userProfile = {
+    id: null,
+    name: "Mark Bryan Brade", 
+    role: "Premium Client",
+    email: "mark.brade@email.com",
+    phone: "+1 (555) 123-4567"
+};
+
+// Database table names
+const DB_TABLES = {
+    PROFILES: 'profiles',
+    PETS: 'vetify_pets',
+    APPOINTMENTS: 'vetify_appointments',
+    VACCINATION_REMINDERS: 'vaccination_reminders'
+};
+
+// ============================================
+// LOAD INITIAL DATA WITH USER AUTHENTICATION
+// ============================================
+
+async function loadInitialData() {
+    try {
+        console.log("Loading initial data...");
+        
+        // 1. Kuhanin ang Session
+        const { data: { user }, error: authError } = await _supabase.auth.getUser();
+
+        if (authError) {
+            console.error("Auth error:", authError);
+            const userId = localStorage.getItem('vetify_user_id');
+            if (userId) {
+                await loadUserProfile(userId);
+                await loadDashboardStats(userId);
+                return;
+            }
+            
+            if (window.location.href.indexOf('login.html') === -1) {
+                window.location.href = 'login.html';
+            }
+            return;
+        }
+
+        if (user) {
+            console.log("User is connected:", user.id);
+            userProfile.id = user.id;
+            userProfile.email = user.email;
+            
+            // 2. I-fetch ang Profile
+            const { data: profile, error: profileError } = await _supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', user.id)
+                .single();
+
+            if (profileError) {
+                console.warn("Profile not found, creating default...");
+                await _supabase.from('profiles').upsert({
+                    id: user.id,
+                    full_name: userProfile.name,
+                    email: user.email,
+                    role: 'Premium Client',
+                    phone: userProfile.phone
+                });
+            } else if (profile) {
+                userProfile.name = profile.full_name || user.email.split('@')[0];
+                userProfile.role = profile.role || 'Premium Client';
+                userProfile.email = profile.email || user.email;
+                userProfile.phone = profile.phone || userProfile.phone;
+            }
+
+            localStorage.setItem('vetify_user_id', user.id);
+            localStorage.setItem('vetify_user_email', user.email);
+            
+            syncUI();
+            
+            await loadDashboardStats();
+            await loadVaccineReminders(); // Load vaccine reminders
+            await logSystemActivity('User logged in', 'Session started');
+            
+        } else {
+            console.warn("No authenticated user found");
+            const userId = localStorage.getItem('vetify_user_id');
+            if (userId) {
+                await loadUserProfile(userId);
+                await loadDashboardStats(userId);
+            } else if (window.location.href.indexOf('login.html') === -1) {
+                window.location.href = 'login.html';
+            }
+        }
+        
+    } catch (error) {
+        console.error("Error in loadInitialData:", error);
+        const userId = localStorage.getItem('vetify_user_id');
+        if (userId) {
+            await loadUserProfile(userId);
+            await loadDashboardStats(userId);
+        }
+    }
+}
+
+// ============================================
+// CLOCK FUNCTIONS
+// ============================================
+
+function updateClock() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    
+    const timeElement = document.getElementById('live-time');
+    const dateElement = document.getElementById('live-date');
+    const periodElement = document.getElementById('time-period');
+    
+    if (timeElement) {
+        timeElement.innerText = `${displayHours}:${minutes}:${seconds}`;
+    }
+    
+    if (dateElement) {
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        dateElement.innerText = now.toLocaleDateString('en-US', options);
+    }
+    
+    if (periodElement) {
+        let timePeriod = '';
+        if (hours < 12) timePeriod = 'Morning';
+        else if (hours < 17) timePeriod = 'Afternoon';
+        else if (hours < 20) timePeriod = 'Evening';
+        else timePeriod = 'Night';
+        
+        periodElement.innerText = `${timePeriod} • ${displayHours}:${minutes} ${ampm}`;
+    }
+}
+
+// ============================================
+// CALENDAR FUNCTIONS
+// ============================================
+
+function renderCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const display = document.getElementById('monthYearDisplay');
+    
+    if (!grid || !display) {
+        console.error('Calendar elements not found!');
+        return;
+    }
+    
+    grid.innerHTML = '';
+    
+    display.innerText = new Intl.DateTimeFormat('en-US', { 
+        month: 'long', 
+        year: 'numeric' 
+    }).format(currentMonth);
+    
+    const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
+    const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
+    const today = new Date();
+    
+    for (let i = 0; i < firstDay; i++) {
+        grid.innerHTML += '<div class="day empty"></div>';
+    }
+    
+    for (let i = 1; i <= daysInMonth; i++) {
+        const cellDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i);
+        const isToday = cellDate.toDateString() === today.toDateString();
+        
+        let dayClass = 'day';
+        if (isToday) dayClass += ' today';
+        
+        grid.innerHTML += `
+            <div class="${dayClass}" onclick="openAvailabilityModal(${i})" data-date="${cellDate.toISOString().split('T')[0]}">
+                ${i}
+            </div>
+        `;
+    }
+    
+    loadAppointmentsForCalendar();
+}
+
+async function loadAppointmentsForCalendar() {
+    try {
+        const appointments = await loadAppointments();
+        const grid = document.getElementById('calendarGrid');
+        
+        if (!grid) return;
+        
+        const days = grid.querySelectorAll('.day:not(.empty)');
+        
+        days.forEach((day, index) => {
+            const dayNumber = parseInt(day.textContent);
+            const cellDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), dayNumber);
+            const dateString = cellDate.toISOString().split('T')[0];
+            
+            const hasAppointment = appointments.some(apt => {
+                const aptDate = new Date(apt.date);
+                const aptDateString = aptDate.toISOString().split('T')[0];
+                return aptDateString === dateString && apt.status !== 'Cancelled';
+            });
+            
+            if (hasAppointment) {
+                day.classList.add('event');
+            }
+        });
+        
+    } catch (error) {
+        console.error('Error loading calendar appointments:', error);
+    }
+}
+
+function changeMonth(dir) { 
+    currentMonth.setMonth(currentMonth.getMonth() + dir); 
+    renderCalendar(); 
+}
+
+function openAvailabilityModal(day) { 
+    const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(currentMonth);
+    const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    document.getElementById('modalDateTitle').innerText = `${month} ${day}, ${selectedDate.getFullYear()} - Available Slots`;
+    document.getElementById('availabilityModal').style.display = 'flex';
+    logUserActivity(`Viewed availability for ${month} ${day}`);
+}
+
+function closeAvailabilityModal() { 
+    document.getElementById('availabilityModal').style.display = 'none'; 
+}
+
+// ============================================
+// USER PROFILE FUNCTIONS
+// ============================================
+
+async function loadUserProfile(userId = null) {
+    try {
+        const currentUserId = userId || localStorage.getItem('vetify_user_id');
+        
+        if (!currentUserId) {
+            console.warn('No user ID found');
+            return;
+        }
+        
+        const { data, error } = await _supabase
+            .from(DB_TABLES.PROFILES)
+            .select('*')
+            .eq('id', currentUserId)
+            .single();
+            
+        if (error) {
+            if (error.code === 'PGRST116') {
+                userProfile = {
+                    id: currentUserId,
+                    name: "Mark Bryan Brade", 
+                    role: "Premium Client",
+                    email: "mark.brade@email.com",
+                    phone: "+1 (555) 123-4567"
+                };
+            } else {
+                console.error('Error loading user profile:', error);
+                throw error;
+            }
+        } else if (data) {
+            userProfile = {
+                id: data.id,
+                name: data.full_name || data.name || "User",
+                role: data.role || "Premium Client",
+                email: data.email || userProfile.email,
+                phone: data.phone || userProfile.phone
+            };
+        }
+        
+        syncUI();
+        
+    } catch (error) {
+        console.error('Error in loadUserProfile:', error);
+        syncUI();
+    }
+}
+
+function syncUI() {
+    const topName = document.getElementById('top-name');
+    const panelName = document.getElementById('panel-name');
+    const topRole = document.getElementById('top-role');
+    const panelRole = document.getElementById('panel-role');
+    
+    if (topName) topName.innerText = userProfile.name;
+    if (panelName) panelName.innerText = userProfile.name;
+    if (topRole) topRole.innerText = userProfile.role;
+    if (panelRole) panelRole.innerText = userProfile.role;
+}
+
+async function loadPets() {
+    try {
+        const userId = localStorage.getItem('vetify_user_id') || userProfile.id;
+        
+        if (!userId) {
+            myPets = [];
+            return;
+        }
+        
+        const { data, error } = await _supabase
+            .from(DB_TABLES.PETS)
+            .select('*')
+            .eq('user_id', userId);
+            
+        if (error) throw error;
+        
+        myPets = data || [];
+        
+    } catch (error) {
+        console.error('Error loading pets:', error);
+        myPets = [];
+    }
+}
+
+async function loadAppointments() {
+    try {
+        const userId = localStorage.getItem('vetify_user_id') || userProfile.id;
+        
+        if (!userId) {
+            return [];
+        }
+        
+        const { data, error } = await _supabase
+            .from(DB_TABLES.APPOINTMENTS)
+            .select('*')
+            .eq('user_id', userId)
+            .order('date', { ascending: true });
+            
+        if (error) throw error;
+        
+        return data || [];
+    } catch (error) {
+        console.error('Error loading appointments:', error);
+        return [];
+    }
+}
+
+// ============================================
+// LOAD DASHBOARD STATS FUNCTION
+// ============================================
+
+async function loadDashboardStats(userId = null) {
+    try {
+        let currentUserId = userId;
+        
+        if (!currentUserId) {
+            const { data: { user } } = await _supabase.auth.getUser();
+            currentUserId = user?.id || localStorage.getItem('vetify_user_id');
+        }
+        
+        if (!currentUserId) {
+            console.warn('User not authenticated, using test data');
+            if (document.getElementById('total-appointments')) {
+                document.getElementById('total-appointments').innerText = '3';
+            }
+            return;
+        }
+
+        const { count: aptCount, error: aptError } = await _supabase
+            .from(DB_TABLES.APPOINTMENTS)
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', currentUserId);
+
+        if (aptError) {
+            console.error('Error counting appointments:', aptError);
+        }
+
+        const { count: pendingCount, error: pendingError } = await _supabase
+            .from(DB_TABLES.APPOINTMENTS)
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', currentUserId)
+            .eq('status', 'Pending');
+
+        const { count: vaccineCount, error: vaccineError } = await _supabase
+            .from(DB_TABLES.VACCINATION_REMINDERS)
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', currentUserId)
+            .eq('status', 'Upcoming');
+
+        const statsElements = {
+            'total-appointments': aptCount || 0,
+            'total-apt-count': aptCount || 0,
+            'vaccine-reminders-count': vaccineCount || 0
+        };
+
+        Object.keys(statsElements).forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.innerText = statsElements[id];
+            }
+        });
+
+        const upcomingCount = document.getElementById('upcoming-events-count');
+        if (upcomingCount) {
+            upcomingCount.innerText = pendingCount || 0;
+        }
+
+        console.log('Dashboard stats updated successfully');
+        
+    } catch (error) {
+        console.error('Error loading dashboard stats:', error);
+        if (document.getElementById('total-appointments')) {
+            document.getElementById('total-appointments').innerText = '0';
+        }
+    }
+}
+
+// ============================================
+// VACCINATION REMINDER FUNCTIONS
+// ============================================
+
+async function loadVaccineReminders() {
+    try {
+        const { data: { user } } = await _supabase.auth.getUser();
+        if (!user) return [];
+
+        const { data, error } = await _supabase
+            .from(DB_TABLES.VACCINATION_REMINDERS)
+            .select('*')
+            .eq('user_id', user.id)
+            .order('due_date', { ascending: true });
+
+        if (error) throw error;
+
+        const today = new Date().toISOString().split('T')[0];
+        const reminders = data || [];
+        
+        renderVaccineReminders(reminders);
+        
+        return reminders;
+        
+    } catch (error) {
+        console.error('Error loading vaccination reminders:', error);
+        return [];
+    }
+}
+
+function renderVaccineReminders(reminders) {
+    const reminderList = document.getElementById('vaccineReminderList');
+    if (!reminderList) return;
+    
+    if (reminders.length === 0) {
+        reminderList.innerHTML = `
+            <div class="no-reminders" style="text-align: center; padding: 30px 0; color: var(--text-muted);">
+                <i class="fas fa-syringe" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                <h4 style="margin-bottom: 10px;">No vaccine reminders</h4>
+                <p>Schedule a vaccination to get reminders</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let remindersHTML = '';
+    const today = new Date();
+    
+    reminders.forEach(reminder => {
+        const dueDate = new Date(reminder.due_date);
+        const daysDiff = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+        const formattedDate = dueDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        let statusClass = '';
+        let statusText = '';
+        let statusIcon = '';
+        
+        if (reminder.status === 'Completed') {
+            statusClass = 'completed';
+            statusText = 'Done';
+            statusIcon = 'check';
+        } else if (daysDiff < 0) {
+            statusClass = 'overdue';
+            statusText = `Overdue by ${Math.abs(daysDiff)} days`;
+            statusIcon = 'exclamation-triangle';
+        } else if (daysDiff <= 7) {
+            statusClass = 'urgent';
+            statusText = `${daysDiff} days left`;
+            statusIcon = 'clock';
+        } else {
+            statusClass = 'upcoming';
+            statusText = `${daysDiff} days left`;
+            statusIcon = 'clock';
+        }
+        
+        remindersHTML += `
+            <div class="vaccine-reminder-item">
+                <div class="reminder-header">
+                    <div class="reminder-icon">
+                        <i class="fas fa-${reminder.pet_type === 'Cat' ? 'cat' : 'dog'}"></i>
+                    </div>
+                    <div class="reminder-content">
+                        <div class="reminder-title">${reminder.pet_name || 'Pet'}</div>
+                        <div class="reminder-subtitle">${reminder.vaccine_type || 'Vaccine'}</div>
+                        <div class="reminder-date">Due: ${formattedDate}</div>
+                    </div>
+                </div>
+                <div class="reminder-status ${statusClass}">
+                    <i class="fas fa-${statusIcon}"></i> ${statusText}
+                </div>
+            </div>
+        `;
+    });
+    
+    reminderList.innerHTML = remindersHTML;
+}
+
+async function refreshVaccineReminders() {
+    await loadVaccineReminders();
+    showNotification('Vaccine reminders refreshed!', 'success');
+}
+
+// ============================================
+// CREATE VACCINATION REMINDER FUNCTION
+// ============================================
+
+async function createVaccinationReminder(userId, petName, vaccineType, appointmentDate) {
+    try {
+        const appointmentDateObj = new Date(appointmentDate);
+        const dueDate = new Date(appointmentDateObj);
+        dueDate.setMonth(dueDate.getMonth() + 6);
+
+        const reminderData = {
+            user_id: userId,
+            pet_name: petName,
+            vaccine_type: vaccineType || 'Booster Shot',
+            appointment_date: appointmentDate,
+            due_date: dueDate.toISOString().split('T')[0],
+            status: 'Upcoming',
+            created_at: new Date().toISOString()
+        };
+
+        const { error } = await _supabase
+            .from(DB_TABLES.VACCINATION_REMINDERS)
+            .insert([reminderData]);
+
+        if (error) throw error;
+
+        await logSystemActivity('Vaccination Reminder Created', 
+            `Set for ${petName} - due on ${dueDate.toLocaleDateString()}`);
+
+        console.log('Vaccination reminder created successfully');
+        return reminderData;
+        
+    } catch (error) {
+        console.error('Error creating vaccination reminder:', error);
+        throw error;
+    }
+}
+
+// ============================================
+// DISPLAY VACCINE ALERTS
+// ============================================
+
+async function displayVaccineAlerts() {
+    try {
+        const reminders = await loadVaccineReminders();
+        const vaccineAlertSection = document.getElementById('vaccineAlertSection');
+        
+        if (!vaccineAlertSection) return;
+        
+        if (reminders.length === 0) {
+            vaccineAlertSection.innerHTML = '';
+            return;
+        }
+
+        let alertsHTML = '';
+        const today = new Date();
+        let hasAlerts = false;
+        
+        reminders.forEach(reminder => {
+            if (reminder.status === 'Upcoming') {
+                const dueDate = new Date(reminder.due_date);
+                const daysDiff = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+                
+                if (daysDiff <= 30 && daysDiff > 0) {
+                    hasAlerts = true;
+                    alertsHTML += `
+                        <div class="vaccine-alert-section">
+                            <div class="vaccine-alert-header">
+                                <div class="vaccine-alert-icon vaccine-icon-upcoming">
+                                    <i class="fas fa-syringe"></i>
+                                </div>
+                                <div class="vaccine-alert-content">
+                                    <div class="vaccine-alert-title">Upcoming Vaccination</div>
+                                    <div class="vaccine-alert-subtitle">
+                                        ${reminder.pet_name} - ${reminder.vaccine_type}
+                                    </div>
+                                    <div class="vaccine-countdown countdown-upcoming">
+                                        <i class="fas fa-clock"></i> Due in ${daysDiff} days
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vaccine-alert-actions">
+                                <button class="vaccine-alert-btn book" onclick="window.location.href='appointment.html?service=Vaccination'">
+                                    <i class="fas fa-calendar-plus"></i> Schedule
+                                </button>
+                                <button class="vaccine-alert-btn dismiss" onclick="markVaccineAsDone('${reminder.id}')">
+                                    <i class="fas fa-check"></i> Mark as Done
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else if (daysDiff < 0) {
+                    hasAlerts = true;
+                    alertsHTML += `
+                        <div class="vaccine-alert-section">
+                            <div class="vaccine-alert-header">
+                                <div class="vaccine-alert-icon vaccine-icon-overdue">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="vaccine-alert-content">
+                                    <div class="vaccine-alert-title">Vaccination Overdue!</div>
+                                    <div class="vaccine-alert-subtitle">
+                                        ${reminder.pet_name} needs ${reminder.vaccine_type}
+                                    </div>
+                                    <div class="vaccine-countdown countdown-overdue">
+                                        <i class="fas fa-clock"></i> Overdue by ${Math.abs(daysDiff)} days
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vaccine-alert-actions">
+                                <button class="vaccine-alert-btn book" onclick="window.location.href='appointment.html?service=Vaccination'">
+                                    <i class="fas fa-calendar-plus"></i> Book Now
+                                </button>
+                                <button class="vaccine-alert-btn dismiss" onclick="markVaccineAsDone('${reminder.id}')">
+                                    <i class="fas fa-check"></i> Mark as Done
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        });
+        
+        if (hasAlerts) {
+            vaccineAlertSection.innerHTML = alertsHTML;
+        } else {
+            vaccineAlertSection.innerHTML = '';
+        }
+        
+    } catch (error) {
+        console.error('Error displaying vaccine alerts:', error);
+    }
+}
+
+async function markVaccineAsDone(reminderId) {
+    try {
+        const result = await Swal.fire({
+            title: 'Mark as Done?',
+            text: "Are you sure you want to mark this vaccination as completed?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#10b981',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Yes, mark as done',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (result.isConfirmed) {
+            const { error } = await _supabase
+                .from(DB_TABLES.VACCINATION_REMINDERS)
+                .update({ status: 'Completed', completed_at: new Date().toISOString() })
+                .eq('id', reminderId);
+
+            if (error) throw error;
+
+            await logSystemActivity('Vaccination Completed', 'Marked as done by user');
+            await displayVaccineAlerts();
+            await loadVaccineReminders();
+            
+            Swal.fire('Done!', 'Vaccination marked as completed.', 'success');
+        }
+    } catch (error) {
+        console.error('Error marking vaccine as done:', error);
+        Swal.fire('Error', 'Failed to update reminder', 'error');
+    }
+}
+
+// ============================================
+// APPOINTMENT HISTORY FUNCTIONS
+// ============================================
+
+async function renderHistory() {
+    try {
+        const appointments = await loadAppointments();
+        const penList = document.getElementById('pending-list');
+        const compList = document.getElementById('completed-list');
+        const cancList = document.getElementById('cancelled-list');
+        
+        if (!penList || !compList || !cancList) return;
+        
+        penList.innerHTML = ''; 
+        compList.innerHTML = ''; 
+        cancList.innerHTML = '';
+        
+        appointments.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        appointments.forEach(appt => {
+            const status = appt.status || 'Pending';
+            const displayPet = appt.pet_name || 'Unnamed Pet';
+            
+            const formattedDate = new Date(appt.date).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+            
+            let statusBadge = '';
+            if (status === 'Confirmed' || status === 'Completed') {
+                statusBadge = '<span class="status-badge status-confirmed">Confirmed</span>';
+            } else if (status === 'Cancelled') {
+                statusBadge = '<span class="status-badge status-cancelled">Cancelled</span>';
+            } else {
+                statusBadge = '<span class="status-badge status-pending">Pending</span>';
+            }
+            
+            const row = `<tr>
+                <td>${formattedDate}</td>
+                <td><strong>${displayPet}</strong></td>
+                <td>${appt.service || 'General Checkup'}</td>
+                <td>${statusBadge}</td>
+            </tr>`;
+            
+            if (status === 'Confirmed' || status === 'Completed') {
+                compList.innerHTML += row;
+            } else if (status === 'Cancelled') {
+                cancList.innerHTML += row;
+            } else {
+                penList.innerHTML += row;
+            }
+        });
+        
+        checkEmpty(penList, "No pending appointments");
+        checkEmpty(compList, "No completed appointments");
+        checkEmpty(cancList, "No cancelled appointments");
+        
+    } catch (error) {
+        console.error('Error rendering history:', error);
+    }
+}
+
+function checkEmpty(list, message) {
+    if (list.innerHTML === '') {
+        list.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                    <i class="fas fa-calendar-times" style="font-size: 32px; margin-bottom: 15px; display: block;"></i>
+                    <div style="font-weight: 600; font-size: 16px; margin-bottom: 8px;">${message}</div>
+                    <div style="font-size: 14px;">Schedule an appointment to get started</div>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+// ============================================
+// UPCOMING EVENTS FUNCTIONS
+// ============================================
+
+async function loadUpcomingEvents() {
+    try {
+        const appointments = await loadAppointments();
+        let allEvents = [];
+        const today = new Date();
+        
+        appointments.forEach((apt, index) => {
+            if (apt.status !== 'Cancelled' && apt.date) {
+                const eventDate = new Date(apt.date);
+                if (eventDate >= today) {
+                    allEvents.push({
+                        type: 'appointment',
+                        id: apt.id || `APT-${index}`,
+                        title: `${apt.service || 'Appointment'} - ${apt.pet_name || 'Pet'}`,
+                        date: apt.date,
+                        time: apt.time || '09:00',
+                        pet: apt.pet_name || 'Unknown Pet',
+                        service: apt.service || 'General Checkup',
+                        status: apt.status || 'Pending'
+                    });
+                }
+            }
+        });
+        
+        upcomingEvents = allEvents;
+        const countElement = document.getElementById('upcoming-events-count');
+        if (countElement) {
+            countElement.innerText = allEvents.length;
+        }
+        
+        renderUpcomingEvents();
+        
+    } catch (error) {
+        console.error('Error loading upcoming events:', error);
+        upcomingEvents = [];
+    }
+}
+
+function renderUpcomingEvents() {
+    const eventsList = document.getElementById('upcomingEventsList');
+    if (!eventsList) return;
+    
+    if (upcomingEvents.length === 0) {
+        eventsList.innerHTML = `
+            <div class="no-upcoming">
+                <i class="fas fa-calendar-times"></i>
+                <h4>No upcoming appointments</h4>
+                <p>Schedule an appointment to get started.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    eventsList.innerHTML = '';
+    
+    upcomingEvents.forEach((event, index) => {
+        const eventDate = new Date(event.date);
+        const formattedDate = eventDate.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
+        });
+        
+        const displayTime = event.time ? formatTimeForDisplay(event.time) : 'Time TBD';
+        
+        let statusBadge = '';
+        let statusClass = '';
+        
+        if (event.status === 'Confirmed') {
+            statusBadge = 'Confirmed';
+            statusClass = 'status-confirmed';
+        } else if (event.status === 'Pending') {
+            statusBadge = 'Pending';
+            statusClass = 'status-pending';
+        } else if (event.status === 'Completed') {
+            statusBadge = 'Completed';
+            statusClass = 'status-confirmed';
+        } else if (event.status === 'Cancelled') {
+            statusBadge = 'Cancelled';
+            statusClass = 'status-cancelled';
+        }
+        
+        const eventCard = document.createElement('div');
+        eventCard.className = 'upcoming-card';
+        eventCard.innerHTML = `
+            <div class="upcoming-header">
+                <div>
+                    <div class="upcoming-title">${event.title}</div>
+                    <span class="upcoming-type type-appointment">
+                        Appointment
+                    </span>
+                </div>
+            </div>
+            
+            <div class="upcoming-details">
+                <div class="upcoming-detail">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>${formattedDate} at ${displayTime}</span>
+                </div>
+                <div class="upcoming-detail">
+                    <i class="fas fa-paw"></i>
+                    <span>Pet: ${event.pet}</span>
+                </div>
+                <div class="upcoming-detail">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Service: ${event.service}</span>
+                </div>
+                ${statusBadge ? `
+                    <div class="upcoming-detail">
+                        <span class="status-badge ${statusClass}">${statusBadge}</span>
+                    </div>
+                ` : ''}
+            </div>
+            
+            <div class="upcoming-actions">
+                <button class="upcoming-btn view" onclick="handleViewEvent('${event.id}')">
+                    <i class="fas fa-eye"></i> View
+                </button>
+                <button class="upcoming-btn reschedule" onclick="handleRescheduleEvent('${event.id}')">
+                    <i class="fas fa-calendar-alt"></i> Reschedule
+                </button>
+                <button class="upcoming-btn cancel" onclick="handleCancelEvent('${event.id}')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        `;
+        eventsList.appendChild(eventCard);
+    });
+}
+
+// ============================================
+// EVENT HANDLER FUNCTIONS
+// ============================================
+
+async function handleViewEvent(eventId) {
+    try {
+        await logSystemActivity('Viewed event details', `Event ID: ${eventId}`);
+        
+        const { data: appointment, error } = await _supabase
+            .from('vetify_appointments')
+            .select('*')
+            .eq('id', eventId)
+            .single();
+            
+        if (error) throw error;
+        
+        Swal.fire({
+            title: 'Appointment Details',
+            html: `
+                <div style="text-align: left; margin: 20px 0;">
+                    <p><strong>Pet:</strong> ${appointment.pet_name || 'Unknown'}</p>
+                    <p><strong>Service:</strong> ${appointment.service || 'General Checkup'}</p>
+                    <p><strong>Date:</strong> ${new Date(appointment.date).toLocaleDateString()}</p>
+                    <p><strong>Time:</strong> ${formatTimeForDisplay(appointment.time || '09:00')}</p>
+                    <p><strong>Status:</strong> ${appointment.status || 'Pending'}</p>
+                    <p><strong>Ticket Number:</strong> ${appointment.ticket_number || 'Not assigned'}</p>
+                    ${appointment.symptoms ? `<p><strong>Symptoms:</strong> ${appointment.symptoms}</p>` : ''}
+                </div>
+            `,
+            icon: 'info',
+            confirmButtonColor: '#3085d6'
+        });
+        
+    } catch (error) {
+        console.error('Error viewing event:', error);
+        showNotification('Unable to load event details', 'error');
+    }
+}
+
+async function handleRescheduleEvent(eventId) {
+    await logSystemActivity('Attempted to reschedule event', `Event ID: ${eventId}`);
+    showNotification('Reschedule feature coming soon!', 'info');
+}
+
+async function handleCancelEvent(eventId) {
+    const { data: { user } } = await _supabase.auth.getUser();
+    if (!user) {
+        Swal.fire('Error', 'Please login first.', 'error');
+        return;
+    }
+
+    const result = await Swal.fire({
+        title: 'Kanselahin ang Appointment?',
+        text: "Hindi na ito mababawi pagkatapos.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oo, Kanselahin',
+        cancelButtonText: 'Hindi'
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const { error } = await _supabase
+                .from('vetify_appointments')
+                .update({ 
+                    status: 'Cancelled',
+                    cancelled_at: new Date().toISOString()
+                })
+                .eq('id', eventId)
+                .eq('user_id', user.id);
+
+            if (error) throw error;
+
+            await logSystemActivity('Cancelled', `Appointment ${eventId} was cancelled.`);
+            
+            Swal.fire('Cancelled!', 'Ang appointment ay nakansela na.', 'success');
+            
+            await loadUpcomingEvents();
+            await loadDashboardStats();
+            renderCalendar();
+            
+        } catch (err) {
+            console.error('Error cancelling appointment:', err);
+            Swal.fire('Error', err.message, 'error');
+        }
+    }
+}
+
+function formatTimeForDisplay(timeString) {
+    if (!timeString) return 'Time TBD';
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+// ============================================
+// SYSTEM LOG FUNCTIONS
+// ============================================
+
+async function logSystemActivity(action, details = '') {
+    try {
+        const userId = localStorage.getItem('vetify_user_id') || userProfile.id;
+        const { data: { user } } = await _supabase.auth.getUser();
+        
+        console.log(`System Activity: ${action} - ${details}`);
+        
+    } catch (error) {
+        console.error('Error in logSystemActivity:', error);
+    }
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 4000;
+            animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            max-width: 400px;
+        ">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideDown 0.3s ease reverse';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+async function logUserActivity(action) {
+    await logSystemActivity(action, 'User action triggered');
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('DOM loaded - initializing VETIFY dashboard...');
+    
+    updateClock();
+    setInterval(updateClock, 1000);
+    
+    renderCalendar();
+    
+    await loadInitialData();
+    
+    try {
+        await loadUpcomingEvents();
+        await renderHistory();
+        await displayVaccineAlerts();
+        
+    } catch (error) {
+        console.error('Error loading data:', error);
+        showNotification('Error loading data. Using offline mode.', 'warning');
+    }
+    
+    const trigger = document.getElementById('profile-trigger');
+    const dropdown = document.getElementById('profile-dropdown');
+    
+    if (trigger && dropdown) {
+        trigger.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            dropdown.classList.toggle('show'); 
+            
+            if (dropdown.classList.contains('show')) {
+                trigger.classList.add('active');
+            } else {
+                trigger.classList.remove('active');
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+                trigger.classList.remove('active');
+            }
+        });
+    }
+    
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => { 
+            Swal.fire({
+                title: 'Logout?',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Logout',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#991b1b',
+                cancelButtonColor: '#94a3b8'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await logSystemActivity('User logged out', 'Session terminated');
+                    
+                    localStorage.removeItem('vetify_user_id');
+                    localStorage.removeItem('vetify_user_email');
+                    
+                    await _supabase.auth.signOut();
+                    
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    }
+    
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+    
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('.main-header');
+        if (header) {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+    });
+    
+    setInterval(async () => {
+        await loadDashboardStats();
+        await displayVaccineAlerts();
+    }, 30000);
+    
+    console.log('VETIFY dashboard initialized successfully!');
+});
+
+// ============================================
+// EXPORT FUNCTIONS FOR GLOBAL USE
+// ============================================
+
+window.filterEvents = function(filter) {
+    currentEventFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    renderUpcomingEvents();
+    showNotification(`Showing ${filter} events`, 'info');
+};
+
+window.refreshUpcomingEvents = async function() {
+    await loadUpcomingEvents();
+    showNotification('Events refreshed!', 'success');
+};
+
+window.switchHistory = function(view) {
+    currentTab = view;
+    document.querySelectorAll('.history-view').forEach(v => v.style.display = 'none');
+    document.getElementById(view + '-view').style.display = 'block';
+    document.querySelectorAll('.h-tab').forEach(t => t.classList.remove('active'));
+    const btnId = view === 'pending' ? 'tab-pen' : (view === 'completed' ? 'tab-comp' : 'tab-canc');
+    document.getElementById(btnId).classList.add('active');
+    const searchInput = document.getElementById('histSearch');
+    if (searchInput) searchInput.value = '';
+};
+
+window.filterHistory = function() {
+    const searchTerm = document.getElementById('histSearch').value.toLowerCase();
+    const targetId = currentTab === 'pending' ? 'pending-list' : currentTab + '-list';
+    const rows = document.querySelectorAll(`#${targetId} tr`);
+    rows.forEach(row => {
+        if (row.cells.length < 2) return;
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? "" : "none";
+    });
+};
+
+window.changeMonth = changeMonth;
+window.openAvailabilityModal = openAvailabilityModal;
+window.closeAvailabilityModal = closeAvailabilityModal;
+window.loadDashboardStats = loadDashboardStats;
+window.logSystemActivity = logSystemActivity;
+window.handleCancelEvent = handleCancelEvent;
+window.handleViewEvent = handleViewEvent;
+window.handleRescheduleEvent = handleRescheduleEvent;
+window.displayVaccineAlerts = displayVaccineAlerts;
+window.refreshVaccineReminders = refreshVaccineReminders;
+window.markVaccineAsDone = markVaccineAsDone;
+
+window.addEventListener('load', loadInitialData);
+</script>
+</body>
+</html>

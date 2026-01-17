@@ -1,0 +1,3232 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | VETIFY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+     /* --- 1. PREMIUM GLOBAL VARIABLES --- */
+        :root { 
+            --primary-blue: #38bdf8; 
+            --secondary-blue: #0ea5e9;  
+            --accent-purple: #818cf8;
+            --accent-teal: #2dd4bf;
+            --brand-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #0ea5e9);
+            --premium-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #2dd4bf, #38bdf8);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --bg-grey: #f8fafc; 
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --card-bg: #ffffff;  
+            --border-color: rgba(0,0,0,0.06);   
+            --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.08); 
+            --card-shadow-hover: 0 30px 80px rgba(56, 189, 248, 0.15);
+            --dark-text: #1e293b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-xl: 0 25px 60px -12px rgba(0, 0, 0, 0.18);
+            --shadow-lg: 0 20px 45px -10px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+            --glow-blue: 0 0 30px rgba(56, 189, 248, 0.3);
+            --glow-purple: 0 0 30px rgba(129, 140, 248, 0.3);
+        }
+
+        /* --- 2. PREMIUM DARK THEME --- */
+        body.dark-theme {
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --bg-grey: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --dark-text: #f1f5f9;
+            --glass-bg: rgba(30, 41, 59, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- 3. PREMIUM BASE STYLES --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {  
+            font-family: 'Plus Jakarta Sans', sans-serif;  
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            color: var(--text-main); 
+            padding-bottom: 80px; 
+            transition: var(--transition);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* Premium Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 15%, rgba(56, 189, 248, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 90% 85%, rgba(129, 140, 248, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 50% 50%, rgba(45, 212, 191, 0.03) 0%, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Animated Gradient Overlay */
+        .premium-gradient-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--premium-gradient);
+            background-size: 400% 400%;
+            animation: gradientMove 20s ease infinite;
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- 4. PREMIUM ANIMATIONS --- */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideDown { 
+            from { opacity: 0; transform: translateY(-30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.9; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.9); }
+        }
+
+        /* Ticket Number Styles */
+        .ticket-number {
+            position: relative;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        .ticket-number::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #0ea5e9);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+
+        .ticket-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ticket-value {
+            font-size: 36px;
+            font-weight: 900;
+            margin: 10px 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .ticket-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .ticket-queue {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .queue-item {
+            text-align: center;
+        }
+
+        .queue-label {
+            font-size: 10px;
+            opacity: 0.8;
+            margin-bottom: 3px;
+        }
+
+        .queue-value {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* --- 5. PREMIUM HEADER & NAVBAR --- */
+        .main-header { 
+            position: sticky; 
+            top: 0; 
+            z-index: 5000; 
+            transition: var(--transition); 
+            padding: 20px 0; 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .main-header.scrolled {
+            padding: 12px 0; 
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(30px) saturate(200%);
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme .main-header.scrolled {
+            background: rgba(30, 41, 59, 0.92);
+        }
+
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 40px; 
+            height: 60px; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+        }
+    .logo-box img { 
+            width: 150px; 
+            height: auto;
+            transition: var(--transition);
+        }
+
+        .logo-box:hover img {
+            transform: scale(1.05);
+        }
+        /* --- 6. PREMIUM NAVBAR STYLES --- */
+        .navbar { 
+            display: flex; 
+            gap: 5px; 
+            background: var(--glass-bg); 
+            padding: 8px; 
+            border-radius: 50px; 
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03), 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar a { 
+            text-decoration: none; 
+            color: var(--text-muted); 
+            font-weight: 700; 
+            font-size: 14px; 
+            padding: 12px 26px; 
+            border-radius: 50px; 
+            transition: var(--transition); 
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .navbar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+            border-radius: 50px;
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+
+        .navbar a.active, 
+        .navbar a:hover { 
+            color: white !important;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .navbar a.active::before,
+        .navbar a:hover::before {
+            opacity: 1;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        .navbar a:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .navbar a i {
+            font-size: 14px;
+        }
+
+        /* --- 7. PREMIUM PROFILE SECTION --- */
+        .profile-wrapper { 
+            position: relative; 
+        }
+        
+        .profile-btn { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            padding: 10px 20px; 
+            border-radius: var(--radius-lg); 
+            transition: var(--transition);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.1));
+            border-radius: var(--radius-lg);
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .profile-btn:hover {
+            border-color: var(--border-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
+        }
+
+        .profile-btn:hover::before {
+            opacity: 1;
+        }
+
+        .profile-info { 
+            text-align: right; 
+            line-height: 1.3; 
+            transition: var(--transition);
+        }
+
+        .profile-info p { 
+            font-size: 14px; 
+            font-weight: 900; 
+            margin: 0; 
+            color: var(--dark-text); 
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-info span { 
+            font-size: 12px; 
+            font-weight: 800; 
+            color: var(--secondary-blue); 
+            display: block;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .profile-avatar { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: var(--radius-lg); 
+            background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(129,140,248,0.15)); 
+            color: var(--secondary-blue); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid rgba(56,189,248,0.3); 
+            transition: var(--transition); 
+            font-size: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--brand-gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .profile-avatar.large { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: var(--radius-lg); 
+            font-size: 24px; 
+        }
+
+        .profile-avatar i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-btn:hover .profile-avatar { 
+            border-color: var(--secondary-blue);
+            transform: rotate(5deg) scale(1.1);
+            box-shadow: var(--glow-blue);
+        }
+
+        .profile-btn:hover .profile-avatar::before {
+            opacity: 0.1;
+        }
+
+        .profile-panel { 
+            position: absolute; 
+            right: 0; 
+            top: calc(100% + 20px); 
+            width: 320px; 
+            background: var(--card-bg); 
+            border-radius: var(--radius-xl); 
+            box-shadow: 0 30px 80px rgba(15, 42, 68, 0.25); 
+            border: 1px solid var(--border-color); 
+            display: none; 
+            overflow: hidden; 
+            z-index: 5001;
+            animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(20px);
+        }
+
+        .profile-panel.show { 
+            display: block; 
+        }
+
+        .profile-panel-header { 
+            display: flex; 
+            gap: 16px; 
+            padding: 28px; 
+            border-bottom: 1px solid var(--border-color); 
+            align-items: center; 
+            background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.08));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-panel-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--brand-gradient);
+            opacity: 0.05;
+            animation: gradientMove 10s ease infinite;
+        }
+
+        .profile-panel-body { 
+            padding: 20px; 
+        }
+
+        .profile-panel-body button { 
+            width: 100%; 
+            background: transparent; 
+            border: none; 
+            padding: 16px 20px; 
+            border-radius: var(--radius-md); 
+            font-weight: 800; 
+            font-size: 14px; 
+            display: flex; 
+            align-items: center; 
+            gap: 14px; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            color: var(--dark-text); 
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-panel-body button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .profile-panel-body button:hover { 
+            background: rgba(56, 189, 248, 0.08); 
+            color: var(--secondary-blue); 
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .profile-panel-body button:hover::before {
+            left: 100%;
+        }
+
+        .profile-panel-footer { 
+            padding: 24px 20px 20px; 
+            border-top: 1px solid var(--border-color); 
+        }
+
+        .logout-btn { 
+            width: 100%; 
+            background: linear-gradient(135deg, #fee2e2, #fecaca); 
+            color: var(--danger); 
+            border: none; 
+            padding: 16px; 
+            border-radius: var(--radius-md); 
+            font-weight: 900; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.25);
+        }
+
+        .logout-btn:hover::before {
+            opacity: 1;
+        }
+
+        .logout-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 8. MAIN CONTENT STYLES --- */
+        .container { 
+            width: 92%; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 20px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin: 40px 0 50px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Progress Steps */
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: var(--border-color);
+            z-index: 1;
+            border-radius: 2px;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            height: 4px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            z-index: 2;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+            transition: var(--transition);
+        }
+
+        .step-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: var(--text-muted);
+            transition: var(--transition);
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 12px;
+        }
+
+        .step-item.active .step-circle {
+            border-color: var(--secondary-blue);
+            background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(129,140,248,0.1));
+            color: var(--secondary-blue);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .step-item.completed .step-circle {
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+        }
+
+        .step-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .step-item.active .step-label {
+            color: var(--secondary-blue);
+        }
+
+        /* Booking Container */
+        .booking-container {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            min-height: 600px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .form-side {
+            padding: 50px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .summary-side {
+            padding: 50px;
+            background: linear-gradient(135deg, rgba(56,189,248,0.02), rgba(129,140,248,0.02));
+            position: relative;
+        }
+
+        .summary-side::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(56,189,248,0.02)"/></svg>');
+            pointer-events: none;
+        }
+
+        /* Step Sections */
+        .step-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step-section.active {
+            display: block;
+        }
+
+        .step-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--dark-text);
+        }
+
+        .step-description {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border-color);
+            background: var(--bg-grey);
+            color: var(--dark-text);
+            font-size: 15px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--secondary-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Selection Grids */
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .card-select {
+            border: 2px solid var(--border-color);
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--card-bg);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-select::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        .card-select:hover {
+            border-color: var(--secondary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-select.selected {
+            border-color: var(--secondary-blue);
+            background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(129,140,248,0.05));
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.1);
+        }
+
+        .card-select.selected::before {
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        .card-select i {
+            font-size: 28px;
+            color: var(--secondary-blue);
+            margin-bottom: 5px;
+            transition: var(--transition);
+        }
+
+        .card-select.selected i {
+            transform: scale(1.2);
+        }
+
+        .card-select h4 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin: 0;
+        }
+
+        .card-select p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Medical History Section */
+        .medical-history-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(129, 140, 248, 0.05), rgba(56, 189, 248, 0.05));
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+        }
+
+        .medical-history-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .medical-history-content {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-sm);
+        }
+
+        .medical-history-empty {
+            font-style: italic;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* Time Slots Grid */
+        .time-slots-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .time-slot {
+            padding: 12px 5px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-grey);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .time-slot:hover {
+            border-color: var(--secondary-blue);
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .time-slot.selected {
+            background: var(--brand-gradient);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .time-slot.disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none !important;
+        }
+
+        .time-slot.disabled:hover {
+            border-color: var(--border-color);
+            background: #e2e8f0;
+        }
+
+        .slot-availability {
+            font-size: 10px;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Date Picker Customization */
+        .date-picker-container {
+            position: relative;
+        }
+
+        .calendar-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-blue);
+            pointer-events: none;
+        }
+
+        .date-input {
+            width: 100%;
+            padding: 16px 20px;
+            padding-right: 45px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border-color);
+            background: var(--bg-grey);
+            color: var(--dark-text);
+            font-size: 15px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .date-input:focus {
+            border-color: var(--secondary-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        .date-input.disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        /* Consent Section */
+        .consent-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(56,189,248,0.05), rgba(129,140,248,0.05));
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--dark-text);
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .checkbox-container input {
+            width: auto;
+            margin-top: 3px;
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        .withdrawal-note {
+            display: block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* Video Call Button */
+        .video-call-btn {
+            background: linear-gradient(135deg, #10b981, #2dd4bf);
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .video-call-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .video-call-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Button Container */
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 16px 35px;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .btn-next {
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            color: white;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-back {
+            background: var(--bg-grey);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-back:hover {
+            background: #e2e8f0;
+            transform: translateY(-3px);
+        }
+
+        /* Summary Side */
+        .summary-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .summary-header h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin-bottom: 8px;
+        }
+
+        .summary-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .summary-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-item:hover {
+            transform: translateX(5px);
+        }
+
+        .sum-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .sum-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--dark-text);
+            line-height: 1.4;
+        }
+
+        .sum-value.empty {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Counter Styles */
+        .counter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .counter-item {
+            background: var(--bg-grey);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .counter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .counter-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        .counter-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--secondary-blue);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .daily-progress {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        }
+
+        .hourly-progress {
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+        }
+
+        /* Pet Profile Styles */
+        .pet-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--bg-grey);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .pet-profile:hover {
+            border-color: var(--secondary-blue);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .pet-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(129,140,248,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--secondary-blue);
+        }
+
+        .pet-info h4 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin-bottom: 4px;
+        }
+
+        .pet-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* MODALS */
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 3000; 
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content { 
+            background: var(--card-bg); 
+            width: 90%; 
+            max-width: 500px; 
+            padding: 40px; 
+            border-radius: var(--radius-xl); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
+            position: relative; 
+            animation: slideDown 0.4s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-close { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            background: var(--bg-grey); 
+            border: none; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            color: var(--text-muted); 
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--secondary-blue);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-form { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+
+        .modal-form label { 
+            font-weight: 700; 
+            font-size: 14px; 
+            color: var(--dark-text); 
+        }
+
+        .modal-form input, .modal-form select { 
+            padding: 14px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius-md); 
+            font-family: inherit; 
+            background: var(--bg-grey); 
+            color: var(--dark-text); 
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .modal-form input:focus, .modal-form select:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+
+        /* SETTINGS UI & TOGGLES */
+        .settings-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 18px 0; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+
+        .settings-info h4 { 
+            font-size: 15px; 
+            font-weight: 700; 
+            margin-bottom: 4px; 
+        }
+
+        .settings-info p { 
+            font-size: 12px; 
+            color: var(--text-muted); 
+        }
+
+        .switch { 
+            position: relative; 
+            display: inline-block; 
+            width: 50px; 
+            height: 28px; 
+        }
+
+        .switch input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+        }
+
+        .slider { 
+            position: absolute; 
+            cursor: pointer; 
+            inset: 0; 
+            background-color: #cbd5e1; 
+            transition: .4s; 
+            border-radius: 34px; 
+        }
+
+        .slider:before { 
+            position: absolute; 
+            content: ""; 
+            height: 22px; 
+            width: 22px; 
+            left: 3px; 
+            bottom: 3px; 
+            background-color: white; 
+            transition: .4s; 
+            border-radius: 50%; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        input:checked + .slider { 
+            background: var(--secondary-blue); 
+        }
+
+        input:checked + .slider:before { 
+            transform: translateX(22px); 
+        }
+
+        /* ACTION BUTTONS */
+        .data-actions { 
+            display: flex; 
+            gap: 12px; 
+            margin-top: 25px; 
+        }
+
+        .btn-data { 
+            flex: 1; 
+            padding: 14px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border-color); 
+            background: var(--bg-grey); 
+            font-size: 13px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            color: var(--dark-text); 
+            transition: var(--transition);
+        }
+
+        .btn-data:hover { 
+            background: #e2e8f0; 
+            border-color: #cbd5e1; 
+            transform: translateY(-2px);
+        }
+
+        .btn-main { 
+            background: var(--brand-gradient); 
+            background-size: 200% 200%; 
+            animation: gradientMove 5s ease infinite; 
+            color: white; 
+            padding: 16px 30px; 
+            border-radius: 50px; 
+            border: none; 
+            font-weight: 700; 
+            cursor: pointer; 
+            width: 100%; 
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .btn-main:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-main:active { 
+            transform: scale(0.98); 
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-side {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .selection-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 20px;
+            }
+            
+            .navbar {
+                display: none;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .selection-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-side, .summary-side {
+                padding: 30px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .time-slots-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .ticket-value {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                margin: 30px 0 40px;
+            }
+            
+            .page-header h1 {
+                font-size: 28px;
+            }
+            
+            .step-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+            
+            .form-side, .summary-side {
+                padding: 20px;
+            }
+            
+            .card-select {
+                padding: 20px;
+            }
+            
+            .time-slots-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .ticket-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="premium-gradient-bg"></div>
+    
+    <header class="main-header">
+        <div class="header-content">
+            <a href="#" class="logo-box">
+                <img src="https://api.builder.io/api/v1/image/assets/TEMP/601e7ce376ebc12baea701438bda54aa021f45c3" alt="VETIFY">
+            </a>
+            <nav class="navbar">
+                <a href="home.html"><i class="fas fa-home"></i> Home</a>
+                <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="appointment.html" class="active"><i class="fas fa-calendar-check"></i> Appointments</a>
+                <a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a>
+                <a href="about us.html"><i class="fas fa-info-circle"></i> About Us</a>
+            </nav>
+
+            <div class="profile-wrapper">
+                <button class="profile-btn" id="profile-trigger">
+                    <div class="profile-info">
+                        <p id="top-name">Mark Bryan Brade</p>
+                        <span id="top-role">Premium Client</span>
+                    </div>
+                    <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                </button>
+
+                <div class="profile-panel" id="profile-dropdown">
+                    <div class="profile-panel-header">
+                        <div class="profile-avatar large"><i class="fas fa-user"></i></div>
+                        <div>
+                            <h4 id="panel-name">Mark Bryan Brade</h4>
+                            <small id="panel-role">Premium Client</small>
+                        </div>
+                    </div>
+                    <div class="profile-panel-body">
+                        <button onclick="openGenericModal('editProfile')"><i class="fas fa-user-edit"></i> Edit Profile</button>
+                        <button onclick="openGenericModal('addPet')"><i class="fas fa-paw"></i> Add New Pet</button>
+                        <button onclick="openGenericModal('myPets')"><i class="fas fa-folder-open"></i> My Pets</button>
+                        <button onclick="openGenericModal('settings')"><i class="fas fa-cog"></i> Settings</button>
+                    </div>
+                    <div class="profile-panel-footer">
+                        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Book an Appointment</h1>
+            <p>Schedule your pet's veterinary visit in just 5 simple steps. Our team is ready to provide the best care.</p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="steps-container">
+            <div class="progress-line" id="progressLine"></div>
+            <div class="step-item active" id="step1-nav">
+                <div class="step-circle">1</div>
+                <span class="step-label">Owner</span>
+            </div>
+            <div class="step-item" id="step2-nav">
+                <div class="step-circle">2</div>
+                <span class="step-label">Pet Info</span>
+            </div>
+            <div class="step-item" id="step3-nav">
+                <div class="step-circle">3</div>
+                <span class="step-label">Service</span>
+            </div>
+            <div class="step-item" id="step4-nav">
+                <div class="step-circle">4</div>
+                <span class="step-label">Schedule</span>
+            </div>
+        </div>
+
+        <!-- Booking Container -->
+        <div class="booking-container">
+            <!-- Form Side -->
+            <div class="form-side">
+                <form id="multiStepForm">
+                    <!-- Step 1: Owner Details -->
+                    <div class="step-section active" id="step1">
+                        <h2 class="step-title">Owner Details</h2>
+                        <p class="step-description">Please provide your contact information so we can reach you regarding your appointment.</p>
+                        
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-input" id="ownerName" placeholder="Enter your full name" oninput="updateSummary()" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" class="form-input" id="email" placeholder="example@email.com" oninput="updateSummary()" required>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Pet Profile -->
+                    <div class="step-section" id="step2">
+                        <h2 class="step-title">Pet Information</h2>
+                        <p class="step-description">Select your pet from your registered pets or add a new one.</p>
+
+                        
+                        <div class="form-group">
+                            <label>Select Pet</label>
+                            <select class="form-select" id="petName" onchange="autoFillSpecies()">
+                                <option value="">-- Choose a Registered Pet --</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Species</label>
+                            <input type="text" class="form-input" id="species" readonly placeholder="Auto-filled from pet selection">
+                        </div>
+
+                        <!-- Medical History Section -->
+                        <div class="medical-history-container" id="medicalHistoryContainer">
+                            <div class="medical-history-title">
+                                <i class="fas fa-history"></i>
+                                <span>Pet Medical History</span>
+                            </div>
+                            <div class="medical-history-content" id="medicalHistoryContent">
+                                Loading medical history...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Service Selection -->
+                    <div class="step-section" id="step3">
+                        <h2 class="step-title">Select Service</h2>
+                        <p class="step-description">Choose the veterinary service your pet needs.</p>
+                        
+                        <div class="selection-grid">
+                            <div class="card-select" onclick="selectType('General Checkup', this)">
+                                <i class="fas fa-stethoscope"></i>
+                                <h4>General Checkup</h4>
+                                <p>Comprehensive physical examination and consultation.</p>
+                            </div>
+                            <div class="card-select" onclick="selectType('Vaccination', this)">
+                                <i class="fas fa-syringe"></i>
+                                <h4>Vaccination</h4>
+                                <p>Core vaccines, booster shots, and rabies vaccination.</p>
+                            </div>
+                            <div class="card-select" onclick="selectType('Grooming', this)">
+                                <i class="fas fa-cut"></i>
+                                <h4>Full Grooming</h4>
+                                <p>Bath, haircut, nail trimming, and dental cleaning.</p>
+                            </div>
+                            <div class="card-select" onclick="selectType('Surgery', this)">
+                                <i class="fas fa-heart-pulse"></i>
+                                <h4>Surgery/Spay</h4>
+                                <p>Advanced surgical procedures and spaying/neutering.</p>
+                            </div>
+                        </div>
+
+                        <!-- Symptoms/Additional Notes -->
+                        <div class="form-group" style="margin-top: 30px;">
+                            <label>OTHERS </label>
+                            <textarea class="form-textarea" id="symptoms" placeholder="Describe any symptoms, concerns, or additional information about your pet's condition..." rows="4"></textarea>
+                            <small style="color: var(--text-muted); font-size: 12px; margin-top: 5px; display: block;">
+                                This information helps our veterinarians prepare for your appointment.
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Schedule -->
+                    <div class="step-section" id="step4">
+                        <h2 class="step-title">Pick Schedule</h2>
+                        <p class="step-description">Select your preferred date and time for the appointment.</p>
+                        
+                        <div class="form-group">
+                            <label>Preferred Date</label>
+                            <div class="date-picker-container">
+                                <input type="date" class="date-input" id="date" required>
+                                <i class="fas fa-calendar-alt calendar-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Preferred Time (Hourly Slots)</label>
+                            <div class="time-slots-container" id="timeSlotsContainer">
+                                <!-- Time slots will be generated here -->
+                            </div>
+                            <small style="color: var(--text-muted); font-size: 12px; margin-top: 5px; display: block;">
+                                Each time slot represents 1 hour. Maximum 3 appointments per hour. Daily limit: 20 appointments.
+                            </small>
+                        </div>
+
+                        <div class="consent-section">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="dataConsent">
+                                <span>I agree to the processing of my personal data for appointment purposes and understand that this information will be handled in accordance with our Privacy Policy.</span>
+                            </label>
+                            <span class="withdrawal-note">You can modify or withdraw your consent anytime by contacting our support team.</span>
+                        </div>
+
+                        <!-- Video Call Redirection (Visible after booking) -->
+                        <button class="video-call-btn" id="videoCallBtn" style="display: none;">
+                            <i class="fas fa-video"></i>
+                            Start Virtual Consultation
+                        </button>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="btn-container">
+                        <button type="button" class="btn btn-back" id="backBtn" style="display:none;" onclick="changeStep(-1)">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-next" id="nextBtn" onclick="changeStep(1)">
+                            Next Step <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Summary Side -->
+            <div class="summary-side">
+                <div class="summary-header">
+                    <h3>Appointment Summary</h3>
+                    <p>Live preview of your booking details</p>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">Owner Name</div>
+                    <div class="sum-value empty" id="sumOwner">—</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">Email Address</div>
+                    <div class="sum-value empty" id="sumEmail">—</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">Pet Information</div>
+                    <div class="sum-value empty" id="sumPet">—</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">Service Type</div>
+                    <div class="sum-value empty" id="sumType">—</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">OTHERS</div>
+                    <div class="sum-value empty" id="sumSymptoms">—</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">Appointment Time</div>
+                    <div class="sum-value empty" id="sumSchedule">—</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">Duration</div>
+                    <div class="sum-value">1 hour</div>
+                </div>
+                
+                <div class="summary-item">
+                    <div class="sum-label">Confirmation</div>
+                    <div class="sum-value">Will be sent via email</div>
+                </div>
+
+                <!-- Appointment Counters Section -->
+                <div class="counter-container" id="countersSection" style="display: none;">
+                    <div class="counter-item">
+                        <div class="counter-header">
+                            <div class="counter-title">
+                                <i class="fas fa-calendar-day" style="color: var(--secondary-blue); margin-right: 8px;"></i>
+                                Daily Appointments
+                            </div>
+                            <div class="counter-value" id="dailyCounterValue">0/20</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill daily-progress" id="dailyProgress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="counter-item">
+                        <div class="counter-header">
+                            <div class="counter-title">
+                                <i class="fas fa-clock" style="color: var(--accent-purple); margin-right: 8px;"></i>
+                                Hourly Appointments
+                            </div>
+                            <div class="counter-value" id="hourlyCounterValue">0/3</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill hourly-progress" id="hourlyProgress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ticket Number Display -->
+                <div class="ticket-number" id="ticketNumberContainer" style="display: none;">
+                    <div class="ticket-label">Your Queue Number</div>
+                    <div class="ticket-value" id="ticketNumber">001</div>
+                    <div class="ticket-subtitle">For <span id="ticketDate">Today</span></div>
+                    <div class="ticket-queue">
+                        <div class="queue-item">
+                            <div class="queue-label">Daily Position</div>
+                            <div class="queue-value" id="dailyPosition">1st</div>
+                        </div>
+                        <div class="queue-item">
+                            <div class="queue-label">Hourly Position</div>
+                            <div class="queue-value" id="hourlyPosition">1st</div>
+                        </div>
+                        <div class="queue-item">
+                            <div class="queue-label">Wait Time</div>
+                            <div class="queue-value" id="estimatedWait">~15 min</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    // 1. SUPABASE INITIALIZATION
+    const supabaseUrl = 'https://feyvtzwbzlnigrzxrxwa.supabase.co';
+    const supabaseKey = 'sb_publishable_c0flkoOUUMbPqjDB-5Bkzw_THgaoCSs';
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // 2. GLOBAL VARIABLES
+    let currentStep = 1;
+    const totalSteps = 4; // BINAGO: 4 steps na lang
+    let selectedService = "";
+    let selectedDate = "";
+    let selectedTime = "";
+    let appointmentId = null;
+    const APPOINTMENTS_PER_HOUR = 3;
+    const DAILY_APPOINTMENT_LIMIT = 20;
+    const APPOINTMENT_DURATION = 60; // minutes (1 hour)
+
+    // Data containers
+    let myPets = [];
+    let userProfile = { 
+        name: "Mark Bryan Brade", 
+        role: "Premium Client",
+        email: "mark.brade@email.com",
+        phone: "+1 (555) 123-4567"
+    };
+    
+    // Medical history database
+    const medicalHistoryDB = {
+        "Maximus": [
+            "Vaccinated: Rabies (2023)",
+            "Vaccinated: DHPP (2023)",
+            "Last Checkup: 6 months ago",
+            "Allergies: None reported",
+            "Chronic Conditions: None",
+            "Previous Issues: Mild ear infection (treated)",
+            "Weight: 65 lbs",
+            "Diet: Premium dry food"
+        ],
+        "Luna": [
+            "Vaccinated: FVRCP (2023)",
+            "Spayed: Yes (2021)",
+            "Last Dental Cleaning: 8 months ago",
+            "Allergies: Dust mites",
+            "Medication: None currently",
+            "Previous Issues: Dental plaque buildup",
+            "Weight: 8 lbs",
+            "Diet: Wet and dry food mix"
+        ]
+    };
+
+    // ==========================================
+    // 3. CORE FUNCTIONS PARA SA DATABASE (FIXED)
+    // ==========================================
+
+    async function saveToSupabase(tableName, data) {
+        try {
+            const { data: { user } } = await _supabase.auth.getUser();
+            
+            if (!user) {
+                console.warn("No authenticated user found.");
+                return;
+            }
+
+            const records = Array.isArray(data) ? data : [data];
+            
+            const finalData = records.map(item => {
+                const mappedItem = { ...item };
+                
+                if (tableName === 'profiles') {
+                    mappedItem.id = user.id;
+                } else {
+                    mappedItem.user_id = user.id;
+                }
+                return mappedItem;
+            });
+
+            const conflictColumn = (tableName === 'profiles') ? 'id' : 'id';
+
+            const { error } = await _supabase
+                .from(tableName)
+                .upsert(finalData, { onConflict: conflictColumn });
+
+            if (error) throw error;
+            
+            console.log(`Successfully synced ${tableName}`);
+        } catch (err) {
+            console.error(`Error sa saveToSupabase (${tableName}):`, err.message);
+            throw err;
+        }
+    }
+
+    async function loadFromSupabase(tableName) {
+        try {
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (!user) return [];
+
+            const filterColumn = (tableName === 'profiles') ? 'id' : 'user_id';
+
+            const { data, error } = await _supabase
+                .from(tableName)
+                .select('*')
+                .eq(filterColumn, user.id);
+
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error(`Error loading from ${tableName}:`, error);
+            return [];
+        }
+    }
+
+    async function loadInitialData() {
+        try {
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (!user) return;
+
+            const [petsData, profileData] = await Promise.all([
+                loadFromSupabase('vetify_pets'),
+                loadFromSupabase('profiles')
+            ]);
+
+            if (petsData.length > 0) myPets = petsData;
+            
+            if (profileData.length > 0) {
+                userProfile = {
+                    ...userProfile,
+                    name: profileData[0].full_name || userProfile.name,
+                    email: profileData[0].email || userProfile.email,
+                    phone: profileData[0].phone || userProfile.phone
+                };
+            }
+
+            syncData();
+        } catch (error) {
+            console.error('Error loading initial data:', error);
+        }
+    }
+
+    async function syncData() {
+        try {
+            await saveToSupabase('profiles', {
+                full_name: userProfile.name,
+                email: userProfile.email,
+                phone: userProfile.phone,
+                role: userProfile.role
+            });
+
+            if (myPets.length > 0) {
+                await saveToSupabase('vetify_pets', myPets);
+            }
+
+            document.getElementById('top-name').innerText = userProfile.name;
+            document.getElementById('panel-name').innerText = userProfile.name;
+            document.getElementById('top-role').innerText = userProfile.role;
+            document.getElementById('panel-role').innerText = userProfile.role;
+            
+            document.getElementById('ownerName').value = userProfile.name;
+            document.getElementById('email').value = userProfile.email || '';
+            
+            showNotification('Data synced to Supabase!', 'success');
+        } catch (error) {
+            console.error('Error syncing data:', error);
+            showNotification('Failed to sync data: ' + error.message, 'error');
+        }
+    }
+
+    async function finalizeAppointment() {
+        try {
+            const { data: { user } } = await _supabase.auth.getUser();
+            
+            if (!user) {
+                Swal.fire('Error', 'Kailangan mong mag-login muna para makapag-book.', 'warning');
+                return;
+            }
+                    
+            const petInput = document.getElementById('petName');
+            const petNameValue = petInput ? petInput.value.trim() : 'Unnamed Pet';
+
+            const appointmentData = {
+                user_id: user.id,
+                date: selectedDate, 
+                time: selectedTime, 
+                service: selectedService,
+                pet_name: petNameValue,
+                status: 'Pending',
+                ticket_number: 'VET-' + Math.floor(Math.random() * 8999 + 1000),
+                notes: document.getElementById('symptoms').value.trim(),
+                booked_at: new Date().toISOString()
+            };
+
+            const { error: aptError } = await _supabase
+                .from('vetify_appointments')
+                .insert([appointmentData]);
+
+            if (aptError) throw aptError;
+
+            if (selectedService === 'Vaccination') {
+                const nextDate = new Date();
+                nextDate.setMonth(nextDate.getMonth() + 6);
+
+                const { error: remError } = await _supabase
+                    .from('vaccination_reminders')
+                    .insert([{
+                        user_id: user.id,
+                        pet_name: petNameValue,
+                        vaccine_type: 'Booster Shot',
+                        due_date: nextDate.toISOString().split('T')[0],
+                        status: 'Upcoming'
+                    }]);
+                
+                if (remError) console.error("Reminder Error:", remError);
+            }
+
+            Swal.fire('Booked!', 'Your appointment has been successfully booked.', 'success');
+            
+            return appointmentData;
+
+        } catch (error) {
+            console.error("Supabase Error:", error);
+            Swal.fire('Error', 'Database Error: ' + error.message, 'error');
+            throw error;
+        }
+    }
+
+    // 4. ORIGINAL FUNCTIONS
+    function updateProgressBar() {
+        const progress = ((currentStep - 1) / (totalSteps - 1)) * 80;
+        document.getElementById('progressLine').style.width = `${progress}%`;
+    }
+
+    function loadPetsToAppointment() {
+        const petSelect = document.getElementById('petName');
+        const petContainer = document.getElementById('petProfileContainer');
+        
+        if (!petSelect) return;
+
+        petSelect.innerHTML = '<option value="">-- Choose a Registered Pet --</option>';
+        
+        if (petContainer) {
+            petContainer.innerHTML = '';
+        }
+        
+        myPets.forEach((pet, index) => {
+            const option = document.createElement('option');
+            option.value = pet.name;
+            option.textContent = pet.name;
+            option.setAttribute('data-species', pet.species);
+            option.setAttribute('data-breed', pet.breed || 'Unknown');
+            option.setAttribute('data-age', pet.age);
+            petSelect.appendChild(option);
+            
+            if (petContainer) {
+                const petProfile = document.createElement('div');
+                petProfile.className = 'pet-profile';
+                petProfile.innerHTML = `
+                    <div class="pet-avatar">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <div class="pet-info">
+                        <h4>${pet.name}</h4>
+                        <p>${pet.species} • ${pet.breed || 'Unknown breed'} • ${pet.age} years old</p>
+                    </div>
+                `;
+                petProfile.onclick = () => {
+                    petSelect.value = pet.name;
+                    autoFillSpecies();
+                    updateSummary();
+                    loadMedicalHistory(pet.name);
+                };
+                petContainer.appendChild(petProfile);
+            }
+        });
+        
+        if (petContainer) {
+            const addPetBtn = document.createElement('div');
+            addPetBtn.className = 'pet-profile';
+            addPetBtn.style.cursor = 'pointer';
+            addPetBtn.style.background = 'linear-gradient(135deg, rgba(56,189,248,0.1), rgba(129,140,248,0.1))';
+            addPetBtn.innerHTML = `
+                <div class="pet-avatar" style="background: var(--brand-gradient); color: white;">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="pet-info">
+                    <h4 style="color: var(--secondary-blue);">Add New Pet</h4>
+                    <p>Register a new pet in your profile</p>
+                </div>
+            `;
+            addPetBtn.onclick = () => openGenericModal('addPet');
+            petContainer.appendChild(addPetBtn);
+        }
+        
+        if (myPets.length > 0) {
+            loadMedicalHistory(myPets[0].name);
+        }
+    }
+
+    function loadMedicalHistory(petName) {
+        const container = document.getElementById('medicalHistoryContent');
+        if (!container) return;
+
+        const history = medicalHistoryDB[petName] || myPets.find(p => p.name === petName)?.medicalHistory || [];
+        
+        if (history.length > 0) {
+            container.innerHTML = history.map(item => 
+                `<div style="margin-bottom: 8px; padding-left: 10px; border-left: 3px solid var(--accent-purple);">${item}</div>`
+            ).join('');
+        } else {
+            container.innerHTML = '<div class="medical-history-empty">No medical history recorded for this pet.</div>';
+        }
+    }
+
+    function autoFillSpecies() {
+        const petSelect = document.getElementById('petName');
+        const speciesInput = document.getElementById('species');
+        
+        if (!petSelect || !speciesInput) return;
+
+        const selectedOption = petSelect.options[petSelect.selectedIndex];
+        const petName = petSelect.value;
+        const species = selectedOption.getAttribute('data-species');
+        const breed = selectedOption.getAttribute('data-breed');
+        const age = selectedOption.getAttribute('data-age');
+        
+        if (species) {
+            speciesInput.value = `${species} (${breed}, ${age} years)`;
+            loadMedicalHistory(petName);
+        } else {
+            speciesInput.value = "";
+        }
+        
+        updateSummary();
+    }
+
+    async function generateTimeSlots() {
+        const container = document.getElementById('timeSlotsContainer');
+        if (!container) return;
+
+        container.innerHTML = '';
+        
+        const startHour = 9;
+        const endHour = 17;
+        
+        for (let hour = startHour; hour < endHour; hour++) {
+            const timeString = `${hour.toString().padStart(2, '0')}:00`;
+            const displayTime = formatTimeForDisplay(timeString);
+            
+            const { currentHourlyAppointments, hourlyAvailable } = await getHourAvailability(timeString);
+            
+            const timeSlot = document.createElement('div');
+            timeSlot.className = 'time-slot';
+            timeSlot.textContent = displayTime;
+            timeSlot.setAttribute('data-time', timeString);
+            timeSlot.setAttribute('data-hour', hour);
+            
+            const availabilityBadge = document.createElement('span');
+            availabilityBadge.className = 'slot-availability';
+            availabilityBadge.textContent = `${currentHourlyAppointments}/${APPOINTMENTS_PER_HOUR}`;
+            availabilityBadge.style.color = hourlyAvailable ? 'var(--success)' : 'var(--danger)';
+            timeSlot.appendChild(availabilityBadge);
+            
+            if (hourlyAvailable) {
+                timeSlot.onclick = () => selectTimeSlot(timeSlot, timeString);
+                
+                if (selectedTime === timeString) {
+                    timeSlot.classList.add('selected');
+                }
+            } else {
+                timeSlot.classList.add('disabled');
+                timeSlot.title = 'This time slot is fully booked for this hour';
+            }
+            
+            container.appendChild(timeSlot);
+        }
+        
+        updateCounters();
+    }
+
+    async function getHourAvailability(timeString) {
+        if (!selectedDate) return { currentHourlyAppointments: 0, hourlyAvailable: true };
+        
+        const currentHourlyAppointments = await getAppointmentsCount(selectedDate, timeString);
+        const hourlyAvailable = currentHourlyAppointments < APPOINTMENTS_PER_HOUR;
+        
+        return { currentHourlyAppointments, hourlyAvailable };
+    }
+
+    async function getDailyAppointments() {
+        if (!selectedDate) return { dailyAppointments: 0, dailyAvailable: true };
+        
+        const dailyAppointments = await getAppointmentsCount(selectedDate);
+        const dailyAvailable = dailyAppointments < DAILY_APPOINTMENT_LIMIT;
+        
+        return { dailyAppointments, dailyAvailable };
+    }
+
+    async function getAppointmentsCount(date, time = null) {
+        try {
+            const { data, error } = await _supabase
+                .from('vetify_appointments')
+                .select('*')
+                .eq('date', date);
+
+            if (error) throw error;
+
+            let appointments = data || [];
+
+            if (time) {
+                appointments = appointments.filter(apt => apt.time === time);
+            }
+
+            return appointments.length;
+        } catch (error) {
+            console.error('Error getting appointments count:', error);
+            return 0;
+        }
+    }
+
+    function selectTimeSlot(element, timeString) {
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            slot.classList.remove('selected');
+        });
+        
+        element.classList.add('selected');
+        selectedTime = timeString;
+        
+        updateSummary();
+        updateCounters();
+        updateTicketNumber();
+    }
+
+    function formatTimeForDisplay(timeString) {
+        const [hours, minutes] = timeString.split(':').map(Number);
+        const period = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+        return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+    }
+
+    async function updateCounters() {
+        if (!selectedDate) return;
+
+        const { dailyAppointments, dailyAvailable } = await getDailyAppointments();
+        const dailyPercentage = Math.min((dailyAppointments / DAILY_APPOINTMENT_LIMIT) * 100, 100);
+        
+        let hourlyPercentage = 0;
+        let hourlyAppointments = 0;
+        
+        if (selectedTime) {
+            const { currentHourlyAppointments } = await getHourAvailability(selectedTime);
+            hourlyAppointments = currentHourlyAppointments;
+            hourlyPercentage = Math.min((hourlyAppointments / APPOINTMENTS_PER_HOUR) * 100, 100);
+        }
+
+        document.getElementById('countersSection').style.display = 'flex';
+        
+        document.getElementById('dailyCounterValue').textContent = `${dailyAppointments}/${DAILY_APPOINTMENT_LIMIT}`;
+        document.getElementById('dailyProgress').style.width = `${dailyPercentage}%`;
+        
+        document.getElementById('hourlyCounterValue').textContent = `${hourlyAppointments}/${APPOINTMENTS_PER_HOUR}`;
+        document.getElementById('hourlyProgress').style.width = `${hourlyPercentage}%`;
+
+        const timeSlots = document.querySelectorAll('.time-slot');
+        timeSlots.forEach(async (slot) => {
+            const time = slot.getAttribute('data-time');
+            const { currentHourlyAppointments } = await getHourAvailability(time);
+            const badge = slot.querySelector('.slot-availability');
+            if (badge) {
+                badge.textContent = `${currentHourlyAppointments}/${APPOINTMENTS_PER_HOUR}`;
+                badge.style.color = currentHourlyAppointments < APPOINTMENTS_PER_HOUR ? 'var(--success)' : 'var(--danger)';
+            }
+        });
+
+        const dateInput = document.getElementById('date');
+        if (!dailyAvailable) {
+            dateInput.classList.add('disabled');
+            dateInput.title = `Daily appointment limit reached (${DAILY_APPOINTMENT_LIMIT}/${DAILY_APPOINTMENT_LIMIT}). Please select another date.`;
+        } else {
+            dateInput.classList.remove('disabled');
+            dateInput.title = '';
+        }
+    }
+
+    async function updateTicketNumber() {
+        if (!selectedDate || !selectedTime) return;
+
+        const appointments = await loadAppointmentsFromSupabase();
+        
+        const dailyAppointments = appointments.filter(apt => apt.date === selectedDate);
+        const hourAppointments = appointments.filter(apt => 
+            apt.date === selectedDate && apt.time === selectedTime + ':00'
+        );
+        
+        const sortedDailyAppointments = dailyAppointments.sort((a, b) => {
+            const timeA = a.time ? a.time.split(':').map(Number) : [0, 0];
+            const timeB = b.time ? b.time.split(':').map(Number) : [0, 0];
+            return (timeA[0] * 60 + timeA[1]) - (timeB[0] * 60 + timeB[1]);
+        });
+
+        const sortedHourAppointments = hourAppointments.sort((a, b) => 
+            new Date(a.booked_at || a.bookedAt) - new Date(b.booked_at || b.bookedAt)
+        );
+
+        const dailyPosition = dailyAppointments.length + 1;
+        const hourlyPosition = hourAppointments.length + 1;
+        
+        const waitMinutes = (dailyPosition - 1) * 20;
+        const estimatedWait = waitMinutes > 0 ? `~${waitMinutes} min` : "Next";
+
+        const dateObj = new Date(selectedDate);
+        const hour = selectedTime.split(':')[0];
+        const dateCode = dateObj.toISOString().slice(2, 10).replace(/-/g, '');
+        const ticketNum = dailyPosition.toString().padStart(3, '0');
+        const ticketNumber = `${dateCode}-${hour}${ticketNum}`;
+
+        document.getElementById('ticketNumberContainer').style.display = 'block';
+        document.getElementById('ticketNumber').textContent = ticketNumber;
+        
+        const formattedDate = dateObj.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        document.getElementById('ticketDate').textContent = formattedDate;
+        
+        document.getElementById('dailyPosition').textContent = getOrdinalSuffix(dailyPosition);
+        document.getElementById('hourlyPosition').textContent = getOrdinalSuffix(hourlyPosition);
+        document.getElementById('estimatedWait').textContent = estimatedWait;
+    }
+
+    async function loadAppointmentsFromSupabase() {
+        try {
+            const { data, error } = await _supabase
+                .from('vetify_appointments')
+                .select('*');
+
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error('Error loading appointments:', error);
+            return [];
+        }
+    }
+
+    function getOrdinalSuffix(n) {
+        if (n >= 11 && n <= 13) return n + "th";
+        switch (n % 10) {
+            case 1: return n + "st";
+            case 2: return n + "nd";
+            case 3: return n + "rd";
+            default: return n + "th";
+        }
+    }
+
+    // 5. STEP NAVIGATION
+    function changeStep(n) {
+        if (n === 1) {
+            if (!validateCurrentStep()) {
+                return;
+            }
+        }
+
+        const sections = document.querySelectorAll('.step-section');
+        const stepItems = document.querySelectorAll('.step-item');
+        
+        sections[currentStep - 1].classList.remove('active');
+        stepItems[currentStep - 1].classList.remove('active');
+        
+        if (n === 1) {
+            stepItems[currentStep - 1].classList.add('completed');
+        } else {
+            stepItems[currentStep].classList.remove('completed');
+        }
+
+        currentStep += n;
+        
+        sections[currentStep - 1].classList.add('active');
+        stepItems[currentStep - 1].classList.add('active');
+        
+        updateProgressBar();
+        updateButtonState();
+        updateSummary();
+        
+        if (currentStep === 4) {
+            generateTimeSlots();
+            updateCounters();
+            updateTicketNumber();
+        }
+        
+        document.querySelector('.form-side').scrollTop = 0;
+        
+        if (currentStep === totalSteps) {
+            document.getElementById('nextBtn').innerHTML = 'Book Appointment <i class="fas fa-calendar-check"></i>';
+        } else if (currentStep === totalSteps - 1 && n === 1) {
+            document.getElementById('nextBtn').innerHTML = 'Next Step <i class="fas fa-arrow-right"></i>';
+        }
+    }
+
+    function validateCurrentStep() {
+        switch (currentStep) {
+            case 1:
+                const ownerName = document.getElementById('ownerName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                
+                if (!ownerName) {
+                    showNotification('Please enter your name', 'warning');
+                    return false;
+                }
+                
+                if (!email || !validateEmail(email)) {
+                    showNotification('Please enter a valid email address', 'warning');
+                    return false;
+                }
+                break;
+                
+            case 2:
+                const petName = document.getElementById('petName').value;
+                
+                if (!petName) {
+                    showNotification('Please select a pet', 'warning');
+                    return false;
+                }
+                break;
+                
+            case 3:
+                if (!selectedService) {
+                    showNotification('Please select a service type', 'warning');
+                    return false;
+                }
+                break;
+                
+            case 4:
+                const date = document.getElementById('date').value;
+                if (!date) {
+                    showNotification('Please select a date', 'warning');
+                    return false;
+                }
+                
+                if (!selectedTime) {
+                    showNotification('Please select a time slot', 'warning');
+                    return false;
+                }
+                
+                if (!document.getElementById('dataConsent').checked) {
+                    showNotification('Please agree to the terms and conditions', 'warning');
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function updateButtonState() {
+        const backBtn = document.getElementById('backBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        backBtn.style.display = currentStep === 1 ? 'none' : 'flex';
+        
+        if (currentStep === totalSteps) {
+            nextBtn.innerHTML = 'Book Appointment <i class="fas fa-calendar-check"></i>';
+            nextBtn.onclick = submitAppointment;
+        } else {
+            nextBtn.innerHTML = 'Next Step <i class="fas fa-arrow-right"></i>';
+            nextBtn.onclick = () => changeStep(1);
+        }
+    }
+
+    // 6. SELECTIONS & SUMMARY
+    function selectType(val, el) {
+        selectedService = val;
+        document.querySelectorAll('.card-select').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        updateSummary();
+    }
+
+    function updateSummary() {
+        const ownerName = document.getElementById('ownerName').value.trim();
+        document.getElementById('sumOwner').innerText = ownerName || "—";
+        document.getElementById('sumOwner').className = ownerName ? 'sum-value' : 'sum-value empty';
+        
+        const email = document.getElementById('email').value.trim();
+        document.getElementById('sumEmail').innerText = email || "—";
+        document.getElementById('sumEmail').className = email ? 'sum-value' : 'sum-value empty';
+        
+        const pet = document.getElementById('petName').value;
+        const species = document.getElementById('species').value;
+        document.getElementById('sumPet').innerText = pet && species ? `${pet} - ${species}` : "—";
+        document.getElementById('sumPet').className = pet && species ? 'sum-value' : 'sum-value empty';
+        
+        document.getElementById('sumType').innerText = selectedService || "—";
+        document.getElementById('sumType').className = selectedService ? 'sum-value' : 'sum-value empty';
+        
+        const symptoms = document.getElementById('symptoms').value.trim();
+        document.getElementById('sumSymptoms').innerText = symptoms || "—";
+        document.getElementById('sumSymptoms').className = symptoms ? 'sum-value' : 'sum-value empty';
+        
+        const date = document.getElementById('date').value;
+        
+        if (date && selectedTime) {
+            const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const displayTime = formatTimeForDisplay(selectedTime);
+            document.getElementById('sumSchedule').innerText = `${formattedDate} at ${displayTime} (1 hour)`;
+            document.getElementById('sumSchedule').className = 'sum-value';
+        } else if (date) {
+            const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('sumSchedule').innerText = `${formattedDate} (Time not selected)`;
+            document.getElementById('sumSchedule').className = 'sum-value';
+        } else {
+            document.getElementById('sumSchedule').innerText = "—";
+            document.getElementById('sumSchedule').className = 'sum-value empty';
+        }
+    }
+
+    // 7. APPOINTMENT SUBMISSION
+    async function submitAppointment() {
+        if (!validateCurrentStep()) {
+            return;
+        }
+        
+        const dateVal = document.getElementById('date').value;
+        
+        if (!dateVal) {
+            showNotification('Please select date', 'warning');
+            return;
+        }
+        
+        if (!selectedTime) {
+            showNotification('Please select time', 'warning');
+            return;
+        }
+        
+        try {
+            const { dailyAppointments, dailyAvailable } = await getDailyAppointments();
+            if (!dailyAvailable) {
+                showNotification(`Daily appointment limit (${DAILY_APPOINTMENT_LIMIT}) reached for this date. Please select another date.`, 'error');
+                return;
+            }
+            
+            const { currentHourlyAppointments, hourlyAvailable } = await getHourAvailability(selectedTime);
+            if (!hourlyAvailable) {
+                showNotification(`This hour is fully booked. Please select another time slot.`, 'error');
+                return;
+            }
+            
+            if (!document.getElementById('dataConsent').checked) {
+                showNotification('Please agree to the terms and conditions', 'warning');
+                return;
+            }
+
+            const appointments = await loadAppointmentsFromSupabase();
+            
+            const dailyAppts = appointments.filter(apt => apt.date === dateVal);
+            const hourAppointments = appointments.filter(apt => 
+                apt.date === dateVal && apt.time === selectedTime + ':00'
+            );
+            
+            const dailyPosition = dailyAppts.length + 1;
+            const hourlyPosition = hourAppointments.length + 1;
+            
+            const dateObj = new Date(dateVal);
+            const hour = selectedTime.split(':')[0];
+            const dateCode = dateObj.toISOString().slice(2, 10).replace(/-/g, '');
+            const ticketNum = dailyPosition.toString().padStart(3, '0');
+            const ticketNumber = `${dateCode}-${hour}${ticketNum}`;
+            
+            const appointment = {
+                ownerName: document.getElementById('ownerName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                petName: document.getElementById('petName').value,
+                species: document.getElementById('species').value,
+                service: selectedService,
+                date: dateVal,
+                time: selectedTime,
+                duration: "1 hour",
+                symptoms: document.getElementById('symptoms').value.trim(),
+                status: 'Confirmed',
+                bookedAt: new Date().toISOString(),
+                ticketNumber: ticketNumber,
+                dailyPosition: dailyPosition,
+                hourlyPosition: hourlyPosition,
+                dailyTotal: dailyAppts.length + 1,
+                hourlyTotal: hourAppointments.length + 1,
+                estimatedWait: (dailyPosition - 1) * 20
+            };
+            
+            const savedAppointment = await finalizeAppointment();
+            
+            const fullAppointment = { ...appointment, ...savedAppointment };
+            appointmentId = appointment.id || Date.now().toString();
+            
+            showAppointmentSuccess(fullAppointment);
+            
+        } catch (error) {
+            console.error('Error submitting appointment:', error);
+            showNotification('Failed to book appointment. Please try again.', 'error');
+        }
+    }
+
+    function showAppointmentSuccess(appointment) {
+        updateTicketNumber();
+        
+        Swal.fire({
+            title: 'Appointment Booked Successfully!',
+            html: `
+                <div style="text-align: left; margin: 20px 0;">
+                    <div style="background: linear-gradient(135deg, #38bdf8, #818cf8); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 12px; margin-bottom: 5px;">YOUR QUEUE NUMBER</div>
+                        <div style="font-size: 36px; font-weight: 900; letter-spacing: 2px;">${appointment.ticket_number || appointment.ticketNumber}</div>
+                        <div style="font-size: 14px; margin-top: 10px;">
+                            <i class="fas fa-clock"></i> ${formatTimeForDisplay(appointment.time)} • 1 hour appointment
+                        </div>
+                    </div>
+                    <p><strong>Date:</strong> ${new Date(appointment.date).toLocaleDateString('en-US', { 
+                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+                    })}</p>
+                    <p><strong>Time:</strong> ${formatTimeForDisplay(appointment.time)} (1 hour)</p>
+                    <p><strong>Service:</strong> ${appointment.service}</p>
+                    <p><strong>Daily Position:</strong> ${getOrdinalSuffix(appointment.dailyPosition)} of ${appointment.dailyTotal}</p>
+                    <p><strong>Hourly Position:</strong> ${getOrdinalSuffix(appointment.hourlyPosition)} of ${appointment.hourlyTotal}</p>
+                    <p><strong>Estimated Wait:</strong> ${appointment.estimatedWait > 0 ? `~${appointment.estimatedWait} minutes` : 'Next'}</p>
+                    <p><strong>Status:</strong> ${appointment.status || 'Confirmed'}</p>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05)); padding: 15px; border-radius: var(--radius-md); border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 15px;">
+                        <p style="margin: 0; font-size: 14px; color: var(--success);">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Appointment Details:</strong> Daily appointments: ${appointment.dailyTotal}/${DAILY_APPOINTMENT_LIMIT} • Hourly appointments: ${appointment.hourlyTotal}/${APPOINTMENTS_PER_HOUR}
+                        </p>
+                    </div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px; margin-top: 20px;">
+                    A confirmation email has been sent to ${appointment.email}.<br>
+                    Please arrive 10 minutes before your scheduled time with your queue number.
+                </p>
+            `,
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Go to Dashboard',
+            cancelButtonText: 'Book Another',
+            confirmButtonColor: '#38bdf8',
+            cancelButtonColor: '#94a3b8',
+            backdrop: 'rgba(0, 0, 0, 0.5)'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "dashboard.html";
+            } else {
+                resetForm();
+            }
+        });
+    }
+
+    function resetForm() {
+        currentStep = 1;
+        selectedService = "";
+        selectedDate = "";
+        selectedTime = "";
+        appointmentId = null;
+        
+        document.querySelectorAll('.step-section').forEach(section => section.classList.remove('active'));
+        document.querySelectorAll('.step-item').forEach(item => {
+            item.classList.remove('active', 'completed');
+        });
+        
+        document.getElementById('step1').classList.add('active');
+        document.getElementById('step1-nav').classList.add('active');
+        
+        document.getElementById('ownerName').value = userProfile.name;
+        document.getElementById('email').value = userProfile.email || '';
+        document.getElementById('petName').value = '';
+        document.getElementById('species').value = '';
+        document.getElementById('symptoms').value = '';
+        document.getElementById('date').value = '';
+        document.getElementById('dataConsent').checked = false;
+        
+        document.querySelectorAll('.card-select').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+        
+        updateButtonState();
+        updateProgressBar();
+        updateSummary();
+        
+        document.getElementById('ticketNumberContainer').style.display = 'none';
+        document.getElementById('countersSection').style.display = 'none';
+        document.getElementById('videoCallBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'flex';
+        
+        window.scrollTo(0, 0);
+        
+        showNotification('Form reset. You can now book another appointment.', 'info');
+    }
+
+    // 8. INITIALIZATION
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadInitialData();
+        loadPetsToAppointment();
+        updateProgressBar();
+        updateButtonState();
+        updateSummary();
+        
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('date');
+        dateInput.min = today;
+        
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        selectedDate = tomorrow.toISOString().split('T')[0];
+        dateInput.value = selectedDate;
+        
+        dateInput.addEventListener('change', async (e) => {
+            selectedDate = e.target.value;
+            selectedTime = '';
+            document.querySelectorAll('.time-slot.selected').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            updateSummary();
+            await generateTimeSlots();
+            await updateCounters();
+            await updateTicketNumber();
+        });
+        
+        document.getElementById('symptoms').addEventListener('input', updateSummary);
+        
+        const trigger = document.getElementById('profile-trigger');
+        const dropdown = document.getElementById('profile-dropdown');
+        
+        trigger.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            dropdown.classList.toggle('show'); 
+            trigger.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', () => {
+            dropdown.classList.remove('show');
+            trigger.classList.remove('active');
+        });
+        
+        document.getElementById('logoutBtn').addEventListener('click', () => { 
+            Swal.fire({
+                title: 'Logout?',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Logout',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#991b1b',
+                cancelButtonColor: '#94a3b8'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+        
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        await generateTimeSlots();
+        await updateCounters();
+        await updateTicketNumber();
+    });
+
+    // 9. MODAL FUNCTIONS
+    const overlay = document.getElementById('modalOverlay');
+    const mBody = document.getElementById('modalBody');
+
+    function openGenericModal(type) {
+        overlay.style.display = 'flex';
+        let content = '';
+
+        if (type === 'editProfile') {
+            content = `
+                <h2 style="margin-bottom: 10px; font-size: 24px; font-weight: 800; color: var(--dark-text);">Edit Profile</h2>
+                <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Update your personal information</p>
+                <div class="modal-form">
+                    <label>Full Name</label>
+                    <input type="text" id="editName" value="${userProfile.name}" placeholder="Enter your full name">
+                    <label>Email Address</label>
+                    <input type="email" id="editEmail" value="${userProfile.email || ''}" placeholder="your.email@example.com">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editPhone" value="${userProfile.phone || ''}" placeholder="+1 (555) 123-4567">
+                    <label>Role / Status</label>
+                    <select id="editRole">
+                        <option ${userProfile.role === 'Premium Client' ? 'selected' : ''}>Premium Client</option>
+                        <option ${userProfile.role === 'Standard Client' ? 'selected' : ''}>Standard Client</option>
+                        <option ${userProfile.role === 'VIP Client' ? 'selected' : ''}>VIP Client</option>
+                    </select>
+                    <button class="btn-main" onclick="saveProfile()">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>`;
+        } else if (type === 'addPet') {
+            content = `
+                <h2 style="margin-bottom: 10px; font-size: 24px; font-weight: 800; color: var(--dark-text);">Add New Pet</h2>
+                <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Register your pet in our system</p>
+                <div class="modal-form">
+                    <label>Pet Name</label>
+                    <input type="text" id="pName" placeholder="e.g. Buddy">
+                    <label>Species</label>
+                    <select id="pSpec">
+                        <option>Dog</option>
+                        <option>Cat</option>
+                        <option>Bird</option>
+                        <option>Rabbit</option>
+                        <option>Reptile</option>
+                        <option>Other</option>
+                    </select>
+                    <label>Breed</label>
+                    <input type="text" id="pBreed" placeholder="e.g. Golden Retriever">
+                    <label>Age (Years)</label>
+                    <input type="number" id="pAge" placeholder="0" min="0" max="30">
+                    <button class="btn-main" onclick="addPet()">
+                        <i class="fas fa-plus-circle"></i> Add Pet to Profile
+                    </button>
+                </div>`;
+        } else if (type === 'myPets') {
+            let petList = myPets.map((p, i) => `
+                <div class="settings-row">
+                    <div>
+                        <h4 style="margin-bottom: 2px;">${p.name}</h4>
+                        <p style="font-size: 12px; color: var(--text-muted);">${p.species} • ${p.breed || 'Unknown breed'} • ${p.age} years</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-data" style="flex:none; width:40px; color:var(--secondary-blue);" onclick="editPet(${i})"><i class="fas fa-edit"></i></button>
+                        <button class="btn-data" style="flex:none; width:40px; color:var(--danger);" onclick="delPet(${i})"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`).join('');
+            
+            content = `
+                <h2 style="margin-bottom: 10px; font-size: 24px; font-weight: 800; color: var(--dark-text);">My Pets</h2>
+                <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;">Manage your registered pets</p>
+                <div style="margin-top:15px; max-height:400px; overflow-y:auto; padding-right: 10px;">
+                    ${petList || '<p style="text-align: center; color: var(--text-muted); padding: 40px 0;">No pets registered yet.</p>'}
+                </div>
+                <div class="data-actions">
+                    <button class="btn-data" onclick="openGenericModal('addPet')">
+                        <i class="fas fa-plus"></i> Add New Pet
+                    </button>
+                </div>`;
+        } else if (type === 'settings') {
+            const isDark = document.body.classList.contains('dark-theme') ? 'checked' : '';
+            content = `
+                <h2 style="margin-bottom: 20px; font-size: 24px; font-weight: 800; color: var(--dark-text);">System Settings</h2>
+                <div class="settings-row">
+                    <div class="settings-info">
+                        <h4>Dark Mode</h4>
+                        <p>Switch between light and dark themes</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" onchange="toggleTheme()" ${isDark}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-info">
+                        <h4>Push Notifications</h4>
+                        <p>Receive appointment reminders and updates</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-info">
+                        <h4>Email Notifications</h4>
+                        <p>Get newsletters and health tips</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="data-actions">
+                    <button class="btn-data" onclick="exportData()">
+                        <i class="fas fa-file-export"></i> Export Data
+                    </button>
+                    <button class="btn-data" style="color: var(--danger)" onclick="requestDel()">
+                        <i class="fas fa-trash-alt"></i> Clear Data
+                    </button>
+                </div>`;
+        }
+        mBody.innerHTML = content;
+    }
+
+    async function saveProfile() {
+        userProfile.name = document.getElementById('editName').value;
+        userProfile.email = document.getElementById('editEmail').value;
+        userProfile.phone = document.getElementById('editPhone').value;
+        userProfile.role = document.getElementById('editRole').value;
+        await syncData();
+        
+        document.getElementById('ownerName').value = userProfile.name;
+        document.getElementById('email').value = userProfile.email;
+        updateSummary();
+        
+        closeModal();
+        showNotification('Profile updated successfully!', 'success');
+    }
+
+    async function addPet() {
+        const name = document.getElementById('pName').value;
+        const species = document.getElementById('pSpec').value;
+        const breed = document.getElementById('pBreed').value;
+        const age = document.getElementById('pAge').value;
+        
+        if (name && age) { 
+            myPets.push({
+                name: name, 
+                species: species, 
+                breed: breed,
+                age: age,
+                registered: new Date().toISOString().split('T')[0],
+                medicalHistory: []
+            }); 
+            await syncData(); 
+            loadPetsToAppointment();
+            closeModal();
+            showNotification(`${name} has been added to your profile!`, 'success');
+        } else {
+            showNotification('Please fill in all required fields', 'error');
+        }
+    }
+
+    async function editPet(index) {
+        const pet = myPets[index];
+        const newName = prompt(`Edit ${pet.name}'s name:`, pet.name);
+        if (newName && newName.trim()) {
+            myPets[index].name = newName.trim();
+            await syncData();
+            showNotification('Pet information updated', 'success');
+        }
+    }
+
+    async function delPet(index) { 
+        const petName = myPets[index].name;
+        Swal.fire({
+            title: 'Remove Pet?',
+            text: `Are you sure you want to remove ${petName} from your profile?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Remove',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#991b1b',
+            cancelButtonColor: '#94a3b8'
+        }).then(async (result) => {
+            if (result.isConfirmed) { 
+                myPets.splice(index,1); 
+                await syncData(); 
+                loadPetsToAppointment();
+                showNotification(`${petName} has been removed`, 'warning');
+            } 
+        });
+    }
+
+    function closeModal() { 
+        overlay.style.display = 'none'; 
+    }
+
+    function toggleTheme() { 
+        document.body.classList.toggle('dark-theme'); 
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); 
+        
+        const theme = document.body.classList.contains('dark-theme') ? 'Dark' : 'Light';
+        showNotification(`${theme} mode activated`, 'info');
+    }
+
+    async function exportData() { 
+        try {
+            const appointments = await loadAppointmentsFromSupabase();
+            const data = {
+                user: userProfile,
+                pets: myPets,
+                appointments: appointments,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = `vetify-data-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            document.body.appendChild(linkElement);
+            linkElement.click();
+            document.body.removeChild(linkElement);
+            
+            showNotification('Data exported successfully!', 'success');
+        } catch (error) {
+            console.error('Error exporting data:', error);
+            showNotification('Failed to export data', 'error');
+        }
+    }
+
+    async function requestDel() { 
+        Swal.fire({
+            title: 'Clear All Data?',
+            text: 'This will delete all your data from the database including appointments and pet information.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Clear All',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#991b1b',
+            cancelButtonColor: '#94a3b8'
+        }).then(async (result) => {
+            if (result.isConfirmed) { 
+                try {
+                    await Promise.all([
+                        deleteFromSupabase('vetify_pets'),
+                        deleteFromSupabase('profiles'),
+                        deleteFromSupabase('vetify_appointments')
+                    ]);
+                    
+                    myPets = [];
+                    userProfile = { name: "", role: "", email: "", phone: "" };
+                    
+                    showNotification('All data has been cleared from database', 'warning');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } catch (error) {
+                    console.error('Error clearing data:', error);
+                    showNotification('Failed to clear data', 'error');
+                }
+            } 
+        });
+    }
+
+    async function deleteFromSupabase(tableName) {
+        try {
+            const { data: { user } } = await _supabase.auth.getUser();
+            let userId;
+            
+            if (!user) {
+                userId = 'anonymous_user';
+            } else {
+                userId = user.id;
+            }
+
+            const { error } = await _supabase
+                .from(tableName)
+                .delete()
+                .eq('user_id', userId);
+
+            if (error) throw error;
+            
+            return true;
+        } catch (error) {
+            console.error(`Error deleting from ${tableName}:`, error);
+            throw error;
+        }
+    }
+
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: var(--radius-md);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                z-index: 4000;
+                animation: slideDown 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-weight: 600;
+                max-width: 400px;
+            ">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideDown 0.3s ease reverse';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+</script>
+</body>
+</html>

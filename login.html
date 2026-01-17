@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VETIFY  | Secure Access Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        /* DYNAMIC STYLES - COMBINED FOR SIMPLICITY */
+        :root { 
+            --primary-blue: #38bdf8; 
+            --secondary-blue: #0ea5e9;  
+            --accent-purple: #818cf8;
+            --brand-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #38bdf8);
+            --premium-gradient: linear-gradient(135deg, #38bdf8, #818cf8, #0ea5e9, #38bdf8);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --bg-grey: #f8fafc; 
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --card-bg: #ffffff;  
+            --border-color: rgba(0,0,0,0.06);   
+            --dark-text: #1e293b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow-xl: 0 25px 60px -12px rgba(0, 0, 0, 0.18);
+            --shadow-lg: 0 20px 45px -10px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+            --glow-blue: 0 0 30px rgba(56, 189, 248, 0.3);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            color: var(--text-main);
+        }
+
+        /* Premium Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 5% 20%, rgba(56, 189, 248, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 95% 80%, rgba(129, 140, 248, 0.03) 0%, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .premium-gradient-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--premium-gradient);
+            background-size: 400% 400%;
+            animation: gradientMove 20s ease infinite;
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        /* DYNAMIC LOGIN CARD */
+        .login-card {
+            width: 95%;
+            max-width: 1200px;
+            height: 700px;
+            background: var(--glass-bg);
+            display: flex;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.3s;
+        }
+
+        /* Brand Section */
+        .brand-section {
+            flex: 1.2;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            z-index: 0;
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 40px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo-circle {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-circle img {
+            width: 200%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .brand-section h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-section p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 350px;
+            margin-top: 10px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-top: 30px;
+            font-size: 14px;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Form Section */
+        .form-section {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--card-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+        }
+
+        .form-header {
+            margin-bottom: 40px;
+            animation: slideIn 0.8s ease forwards 0.5s;
+            opacity: 0;
+        }
+
+        .form-header h2 {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--dark-text);
+            margin-bottom: 10px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-header p {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* Form Inputs */
+        #authForm {
+            animation: fadeIn 1s ease forwards 0.7s;
+            opacity: 0;
+        }
+
+        .input-box {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-box label {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 18px 20px 18px 55px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            transition: var(--transition);
+            background: var(--bg-grey);
+            color: var(--dark-text);
+            font-weight: 600;
+        }
+
+        .input-box input:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .input-box input:focus + i {
+            color: var(--primary-blue);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Options Row */
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--dark-text);
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .remember-me:hover {
+            color: var(--primary-blue);
+        }
+
+        .checkbox-container {
+            position: relative;
+            width: 22px;
+            height: 22px;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 22px;
+            height: 22px;
+            background: var(--bg-grey);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .checkbox-container:hover .checkmark {
+            border-color: var(--primary-blue);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background: var(--brand-gradient);
+            border-color: transparent;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .forgot-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 14px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .forgot-link:hover {
+            color: var(--accent-purple);
+            transform: translateX(5px);
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 20px;
+            background: var(--brand-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 5s ease infinite;
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Attempts Display */
+        #attempts-container {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            background: var(--bg-grey);
+            transition: var(--transition);
+            animation: fadeIn 0.8s ease forwards 0.9s;
+            opacity: 0;
+        }
+
+        .attempts-normal {
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .attempts-warning {
+            color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .attempts-danger {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .attempts-locked {
+            color: var(--text-muted);
+            background: rgba(100, 116, 139, 0.1);
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+
+        /* Signup Link */
+        .signup-text {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 15px;
+            color: var(--text-muted);
+            animation: fadeIn 1s ease forwards 1.1s;
+            opacity: 0;
+        }
+
+        .signup-link {
+            color: var(--primary-blue);
+            font-weight: 900;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .signup-link:hover {
+            color: var(--accent-purple);
+            transform: translateX(5px);
+        }
+
+        /* Legal Footer */
+        .legal-footer {
+            margin-top: auto;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            font-size: 12px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            animation: fadeIn 1s ease forwards 1.3s;
+            opacity: 0;
+        }
+
+        .legal-footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+        }
+
+        .legal-footer a:hover {
+            color: var(--primary-blue);
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Cookie Banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 20px 30px;
+            border-radius: var(--radius-lg);
+            display: none;
+            align-items: center;
+            gap: 25px;
+            font-size: 14px;
+            box-shadow: var(--shadow-xl);
+            z-index: 10000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cookie-btn {
+            background: var(--brand-gradient);
+            border: none;
+            padding: 10px 25px;
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 900;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .cookie-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .login-card {
+                flex-direction: column;
+                height: auto;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            
+            .brand-section {
+                padding: 40px 20px;
+                flex: none;
+                height: 250px;
+            }
+            
+            .form-section {
+                padding: 40px 30px;
+                flex: none;
+            }
+            
+            .logo-circle {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .brand-section h1 {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-section {
+                padding: 30px 20px;
+            }
+            
+            .form-header h2 {
+                font-size: 28px;
+            }
+            
+            .options-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            #cookie-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+
+        /* Particles */
+        .floating-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--brand-gradient);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="premium-gradient-bg"></div>
+    
+    <!-- Floating Particles -->
+    <div class="floating-particles" id="particles"></div>
+
+    <!-- Dynamic Login Card -->
+    <div class="login-card" id="loginCard">
+        <!-- Brand Section -->
+        <div class="brand-section">
+            <div class="logo-container">
+                <div class="logo-circle">
+                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/601e7ce376ebc12baea701438bda54aa021f45c3" 
+                         alt="VETIFY">
+                </div>
+            </div>
+            <h1>VETIFY</h1>
+            <p>Experience world-class veterinary care management with our vetify portal. Access medical records, schedule appointments, and connect with specialists.</p>
+            <div class="premium-badge">
+                <i class="fas fa-gem"></i>
+                <span> SECURE ACCESS</span>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-header">
+                <h2>Portal Login</h2>
+                <p>Welcome back! Please enter your credentials.</p>
+            </div>
+
+            <form id="authForm">
+                <!-- Username Input -->
+                <div class="input-box">
+                    <label>Username or Email</label>
+                    <div class="input-container">
+                        <input type="text" id="username" placeholder="Enter your username or email" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="input-box">
+                    <label>Password</label>
+                    <div class="input-container">
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <i class="fas fa-lock"></i>
+                        <span class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Options Row -->
+                <div class="options-row">
+                    <label class="remember-me">
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="remember">
+                            <span class="checkmark"></span>
+                        </div>
+                        <span>Remember me</span>
+                    </label>
+                    <a href="forgotpas.html" onclick="AuthModule.handleForgot()" class="forgot-link">
+                        <i class="fas fa-key"></i>
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span id="btnText">Sign In</span>
+                </button>
+                
+                <!-- Attempts Display -->
+                <div id="attempts-container" class="attempts-normal">
+                    <span id="attempts-text">
+                        <i class="fas fa-shield-alt"></i>
+                        3 attempts remaining
+                    </span>
+                </div>
+            </form>
+
+            <!-- Signup Link -->
+            <p class="signup-text">
+                Don't have a vetify account? 
+                <a href="sign.html" onclick="AuthModule.handleSignup()" class="signup-link">
+                    <i class="fas fa-user-plus"></i>
+                    Create vetify Account
+                </a>
+            </p>
+
+            <!-- Legal Footer -->
+            <div class="legal-footer">
+                <a onclick="LegalModule.showTerms()">Terms of Service</a>
+                <span>•</span>
+                <a onclick="LegalModule.showPrivacy()">Privacy Policy</a>
+                <span>•</span>
+                <a onclick="LegalModule.showSecurity()">Security</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Banner -->
+    <div id="cookie-banner">
+        <span>
+            <i class="fas fa-cookie-bite" style="margin-right: 10px;"></i>
+            This vetify portal uses cookies to provide the best experience and enhanced security features.
+        </span>
+        <button class="cookie-btn" onclick="CookieModule.accept()">
+            <i class="fas fa-check-circle"></i>
+            Accept All
+        </button>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // 2. Initialize Supabase (Pure JS Version)
+    const supabaseUrl = 'https://feyvtzwbzlnigrzxrxwa.supabase.co';
+    const supabaseKey = 'sb_publishable_c0flkoOUUMbPqjDB-5Bkzw_THgaoCSs';
+    
+    // Ginagamit ang global 'supabase' object mula sa CDN
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // 3. Login Function
+    async function loginUser(email, password, remember) {
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        
+        try {
+            // Show loading state
+            if (submitBtn) submitBtn.disabled = true;
+            if (btnText) btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            
+            // Supabase Authentication
+            const { data, error } = await _supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+            
+            if (error) throw error;
+            
+            // Kunin ang User Profile mula sa 'profiles' table mo
+            const { data: profile } = await _supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', data.user.id)
+                .single();
+            
+            // I-organize ang User Data para sa LocalStorage
+            const userData = {
+                id: data.user.id,
+                email: data.user.email,
+                name: profile?.full_name || data.user.email.split('@')[0],
+                role: profile?.role || 'client', // Default role ay client
+                loginTime: new Date().toISOString()
+            };
+            
+            // Save Session sa Browser Storage
+            localStorage.setItem('vetify_user', JSON.stringify(userData));
+            localStorage.setItem('vetify_is_logged_in', 'true');
+            
+            if (remember) {
+                localStorage.setItem('vetify_remembered_email', email);
+            } else {
+                localStorage.removeItem('vetify_remembered_email');
+            }
+            
+            // Show success message
+            await Swal.fire({
+                title: 'Access Granted!',
+                text: `Welcome back, ${userData.name}!`,
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+            
+            // Redirect base sa role (Admin o Client)
+            if (userData.role === 'admin') {
+                window.location.href = '../admin/admin.dasboard.html';
+            } else {
+                window.location.href = 'home.html';
+            }
+            
+        } catch (error) {
+            Swal.fire({
+                title: 'Login Failed',
+                text: error.message,
+                icon: 'error',
+                confirmButtonColor: '#ef4444'
+            });
+            
+            // Reset button state
+            if (submitBtn) submitBtn.disabled = false;
+            if (btnText) btnText.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+        }
+    }
+
+    // 4. Forgot Password Function
+    async function forgotPassword(email) {
+        const { value: targetEmail } = await Swal.fire({
+            title: 'Reset Password',
+            input: 'email',
+            inputValue: email,
+            inputPlaceholder: 'Enter your registered email',
+            showCancelButton: true,
+            confirmButtonText: 'Send Reset Link',
+            confirmButtonColor: '#38bdf8'
+        });
+
+        if (targetEmail) {
+            try {
+                const { error } = await _supabase.auth.resetPasswordForEmail(targetEmail, {
+                    redirectTo: `${window.location.origin}/client/login.html`,
+                });
+                if (error) throw error;
+                Swal.fire('Email Sent!', 'Check your inbox for the reset link.', 'success');
+            } catch (error) {
+                Swal.fire('Error', error.message, 'error');
+            }
+        }
+    }
+
+    // 5. DOM Event Listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password Show/Hide Toggle
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordInput = document.getElementById('password');
+        
+        if (passwordToggle && passwordInput) {
+            passwordToggle.addEventListener('click', function() {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                this.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+            });
+        }
+        
+        // Handle Form Submission
+        const authForm = document.getElementById('authForm');
+        if (authForm) {
+            authForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const emailValue = document.getElementById('username').value; // 'username' ang ID mo sa input
+                const passwordValue = document.getElementById('password').value;
+                const rememberValue = document.getElementById('remember')?.checked || false;
+                
+                await loginUser(emailValue, passwordValue, rememberValue);
+            });
+        }
+        
+        // Load Remembered Email
+        const rememberedEmail = localStorage.getItem('vetify_remembered_email');
+        if (rememberedEmail && document.getElementById('username')) {
+            document.getElementById('username').value = rememberedEmail;
+            if (document.getElementById('remember')) {
+                document.getElementById('remember').checked = true;
+            }
+        }
+    });
+
+    // Global Module for Buttons (e.g., onclick="AuthModule.handleForgot()")
+    window.AuthModule = {
+        handleForgot: function() {
+            const currentEmail = document.getElementById('username')?.value || '';
+            forgotPassword(currentEmail);
+        }
+    };
+</script>
+</body>
+</html>
